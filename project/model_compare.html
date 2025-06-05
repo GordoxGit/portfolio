@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Étude Comparative : Modèles d'IA pour le Trading XAU/USD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Un gris clair plus doux pour le fond général */
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-link {
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #e2e8f0; /* slate-200 */
+        }
+        .nav-link:hover {
+            background-color: #334155; /* slate-700 */
+            color: #ffffff;
+        }
+        .nav-link.active {
+            background-color: #0ea5e9; /* sky-500 */
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3), 0 2px 4px -2px rgba(14, 165, 233, 0.2);
+        }
+        .nav-link.font-semibold.active { /* Pour les titres de section principaux */
+             background-color: #0284c7; /* sky-600 */
+        }
+        .nav-link.ml-4.active { /* Pour les sous-sections */
+            background-color: #38bdf8; /* sky-400 */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            overflow: hidden; /* Pour que le border-radius s'applique aux coins de la table */
+        }
+        th, td {
+            border-bottom: 1px solid #e2e8f0; /* slate-200 */
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        th {
+            background-color: #f1f5f9; /* slate-100 */
+            font-weight: 600;
+            color: #1e293b; /* slate-800 */
+        }
+        td {
+            background-color: #ffffff;
+            color: #334155; /* slate-700 */
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background-color: #f8fafc; /* slate-50, pour un effet de survol subtil */
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .code-block {
+            background-color: #0f172a; /* slate-900, plus sombre pour le code */
+            color: #cbd5e1; /* slate-300 */
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #1e293b; /* slate-800 */
+        }
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0; /* slate-200 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8; /* slate-400 */
+            border-radius: 10px;
+            border: 2px solid #e2e8f0; /* Pour un effet de "flottement" */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+        
+        .content-card {
+            background-color: #ffffff;
+            padding: 2rem; /* Augmentation du padding */
+            border-radius: 0.75rem; /* Bords plus arrondis */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+            margin-bottom: 2rem; /* Plus d'espace entre les cartes */
+        }
+        h2.section-title { /* Classe personnalisée pour les titres de section principaux */
+            font-size: 2.25rem; /* Plus grand */
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #0c4a6e; /* Un bleu nuit profond */
+            border-bottom: 2px solid #0ea5e9; /* sky-500 */
+            padding-bottom: 0.5rem;
+        }
+         h3.subsection-title { /* Classe personnalisée pour les sous-titres de section */
+            font-size: 1.75rem; /* Plus grand */
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #075985; /* Un bleu un peu plus clair */
+        }
+         h4.block-title { /* Classe personnalisée pour les titres de blocs internes */
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #1e3a8a; /* Indigo */
+        }
+        ul.styled-list {
+            list-style: none; /* Enlever les puces par défaut */
+            padding-left: 0;
+        }
+        ul.styled-list > li {
+            position: relative;
+            padding-left: 1.75rem; /* Espace pour l'icône */
+            margin-bottom: 0.5rem;
+            color: #475569; /* slate-600 */
+        }
+        ul.styled-list > li::before {
+            content: "\f00c"; /* Icône de coche FontAwesome */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 4px; /* Ajustement vertical */
+            color: #0ea5e9; /* sky-500 */
+            font-size: 0.875rem;
+        }
+        ul.styled-list ul { /* Styles pour les listes imbriquées */
+            margin-top: 0.25rem;
+            padding-left: 1rem; /* Moins de padding pour les sous-listes */
+        }
+        ul.styled-list ul > li::before {
+            content: "\f105"; /* Icône de chevron droit FontAwesome */
+        }
+
+        /* Arbre de décision amélioré */
+        .decision-tree-node {
+            border: 1px solid #93c5fd; /* blue-300 */
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            background-color: #eff6ff; /* blue-50 */
+            margin-bottom: 0.75rem;
+            text-align: center;
+            font-weight: 500;
+            color: #1e3a8a; /* indigo-800 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .decision-tree-node strong {
+            font-weight: 700;
+            color: #1d4ed8; /* blue-700 */
+        }
+        .decision-tree-node.bg-sky-100 { /* Pour les chemins principaux */
+            background-color: #e0f2fe; /* sky-100 */
+            border-color: #7dd3fc; /* sky-300 */
+        }
+         .decision-tree-node.bg-emerald-100 { /* Pour les chemins principaux RL */
+            background-color: #d1fae5; /* emerald-100 */
+            border-color: #6ee7b7; /* emerald-300 */
+        }
+        .decision-tree-connector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+        .decision-tree-line {
+            width: 2px; /* Ligne plus épaisse */
+            height: 25px; /* Ligne plus longue */
+            background-color: #bae6fd; /* sky-200 */
+        }
+        .decision-tree-branch {
+            display: flex;
+            justify-content: space-around;
+            gap: 1rem; /* Espace entre les branches */
+        }
+        .decision-tree-branch > div {
+            width: 48%; /* Ajustement pour le gap */
+        }
+        .decision-tree-branch-label {
+            position: absolute;
+            top: -10px; /* Ajuster pour positionner au-dessus de la ligne */
+            background-color: #f0f4f8; /* Même fond que le body pour se fondre */
+            padding: 0 0.25rem;
+            font-size: 0.8rem;
+            color: #475569; /* slate-600 */
+            font-weight: 500;
+        }
+        .decision-tree-branch > div:first-child .decision-tree-branch-label {
+            left: 25%; /* Ajuster pour centrer sur la ligne de gauche */
+            transform: translateX(-50%);
+        }
+        .decision-tree-branch > div:last-child .decision-tree-branch-label {
+            right: 25%; /* Ajuster pour centrer sur la ligne de droite */
+            transform: translateX(50%);
+        }
+
+
+        .page-break {
+            page-break-after: always;
+        }
+        /* Styles d'impression simples */
+        @media print {
+            body { font-size: 10pt; line-height: 1.2; background-color: #ffffff !important; }
+            aside { display: none !important; }
+            main { margin-left: 0 !important; padding: 1cm !important; overflow-y: visible !important; }
+            .content-section { display: block !important; margin-bottom: 2cm; }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; page-break-inside: avoid; color: #000 !important; }
+            table, figure, .code-block { page-break-inside: avoid; }
+            .content-card { background-color: transparent !important; color: #000 !important; border: 1px solid #ccc !important; box-shadow: none !important; border-radius: 0 !important; padding: 1cm;}
+            .text-cyan-700, .text-slate-700, .text-slate-600, .text-slate-800, .text-slate-100, .text-cyan-400, .text-cyan-600, .text-sky-600, .text-sky-500, .text-blue-600, .text-indigo-800, .text-blue-700 { color: #000 !important; }
+            .nav-link, .accordion-header, .btn-enhanced { display: none !important; }
+            .accordion-content { display: block !important; border-top: 1px solid #ccc !important; }
+            .table-container { overflow-x: visible; }
+            .code-block { background-color: #f0f0f0 !important; color: #000 !important; border: 1px solid #ccc !important;}
+            .decision-tree-node { background-color: #f0f0f0 !important; border: 1px solid #ccc !important; color: #000 !important;}
+            .decision-tree-line { background-color: #ccc !important;}
+            ul.styled-list > li::before { color: #000 !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+    <div class="flex min-h-screen">
+        <aside class="w-80 bg-slate-800 text-slate-100 p-5 space-y-2 fixed top-0 left-0 h-full overflow-y-auto print:hidden shadow-lg">
+            <h1 class="text-2xl font-bold mb-8 text-sky-400 tracking-tight">Modèles IA Trading (XAU/USD)</h1>
+            <nav id="report-navigation" class="space-y-1">
+                <a href="#" class="nav-link block" data-target="introduction">1. Introduction</a>
+                <a href="#" class="nav-link block" data-target="scope">2. Portée & Méthodologie</a>
+                <a href="#" class="nav-link block font-semibold" data-target="supervised-intro">3. Modèles Supervisés</a>
+                <a href="#" class="nav-link block ml-4" data-target="catboost">3.1. CatBoost</a>
+                <a href="#" class="nav-link block ml-4" data-target="xgboost">3.2. XGBoost</a>
+                <a href="#" class="nav-link block ml-4" data-target="lightgbm">3.3. LightGBM</a>
+                <a href="#" class="nav-link block ml-4" data-target="tabpfn">3.4. TabPFN</a>
+                <a href="#" class="nav-link block ml-4" data-target="tft">3.5. Temporal Fusion Transformer (TFT)</a>
+                <a href="#" class="nav-link block ml-4" data-target="lstm">3.6. LSTM</a>
+                <a href="#" class="nav-link block ml-4" data-target="tcn">3.7. Temporal Convolutional Network (TCN)</a>
+                <a href="#" class="nav-link block font-semibold" data-target="rl-intro">4. Modèles par Renforcement</a>
+                <a href="#" class="nav-link block ml-4" data-target="dqn">4.1. Deep Q-Network (DQN)</a>
+                <a href="#" class="nav-link block ml-4" data-target="ppo">4.2. Proximal Policy Optimization (PPO)</a>
+                <a href="#" class="nav-link block ml-4" data-target="sac">4.3. Soft Actor-Critic (SAC)</a>
+                <a href="#" class="nav-link block" data-target="comparative-summary">5. Tableau Récapitulatif Comparatif</a>
+                <a href="#" class="nav-link block" data-target="decision-tree">6. Arbre de Décision pour la Sélection</a>
+                <a href="#" class="nav-link block" data-target="gpu-migration">7. Migration CPU vers GPU</a>
+                <a href="#" class="nav-link block" data-target="benchmarks">8. Benchmarks & Perspectives (2023-2025)</a>
+                <a href="#" class="nav-link block" data-target="conclusion">9. Conclusion</a>
+                <a href="#" class="nav-link block" data-target="references">10. Références</a>
+                <a href="#" class="nav-link block" data-target="appendix-rtx3060">11. Annexe : Considérations RTX 3060</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 ml-80 p-6 sm:p-8 md:p-10 overflow-y-auto">
+            
+            <section id="introduction" class="content-section active">
+                <div class="content-card">
+                    <h2 class="section-title">1. Introduction</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed">L'application de l'Intelligence Artificielle (IA) sur les marchés financiers, notamment pour le trading d'actifs comme l'Or (XAU/USD), a suscité une attention considérable. Les modèles d'IA offrent le potentiel de découvrir des schémas complexes, de s'adapter à l'évolution de la dynamique du marché et d'exécuter des transactions avec une vitesse et une précision dépassant les capacités humaines. Cette étude propose une analyse comparative des principaux modèles d'apprentissage supervisé et d'apprentissage par renforcement pour le trading du XAU/USD.</p>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Nous examinons les nuances architecturales, les coûts d'entraînement estimés et les vitesses d'inférence sur une plateforme matérielle commune (NVIDIA RTX 3060), les hyperparamètres clés, les avantages et inconvénients inhérents, ainsi que les résultats de trading publiés ou les benchmarks disponibles, en nous concentrant sur la période 2023-2025. De plus, ce rapport comprend un arbre de décision pour la sélection de modèles afin de guider les praticiens et expose une voie générale pour la migration des implémentations basées sur CPU vers l'accélération GPU.</p>
+                    <p class="text-slate-700 leading-relaxed">La paire XAU/USD, représentant le prix de l'or par rapport au dollar américain, est choisie pour sa forte liquidité, son volume de trading mondial et sa sensibilité à divers facteurs macroéconomiques, ce qui en fait un sujet stimulant et intéressant pour les stratégies de trading basées sur l'IA.</p>
+                </div>
+            </section>
+
+            <section id="scope" class="content-section">
+                <div class="content-card">
+                    <h2 class="section-title">2. Portée et Méthodologie</h2>
+                    <h3 class="subsection-title mt-4">Portée :</h3>
+                    <ul class="styled-list mb-4">
+                        <li><strong>Modèles Couverts :</strong>
+                            <ul class="styled-list">
+                                <li>Apprentissage Supervisé : CatBoost, XGBoost, LightGBM, TabPFN, Temporal Fusion Transformer (TFT), LSTM, Temporal Convolutional Network (TCN).</li>
+                                <li>Apprentissage par Renforcement : Deep Q-Network (DQN), Proximal Policy Optimization (PPO), Soft Actor-Critic (SAC).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Actif Cible :</strong> XAU/USD (Or vs. Dollar Américain).</li>
+                        <li><strong>Aspects d'Évaluation :</strong> Architecture du modèle, coût d'entraînement/vitesse d'inférence estimés (RTX 3060), hyperparamètres clés, avantages & inconvénients, résultats de trading publiés (focus 2023-2025).</li>
+                        <li><strong>Conseils Pratiques :</strong> Arbre de décision pour la sélection de modèles, considérations pour la migration CPU vers GPU.</li>
+                    </ul>
+
+                    <h3 class="subsection-title mt-6">Méthodologie :</h3>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Cette étude est compilée à partir d'une revue d'articles académiques, de documentations techniques, de dépôts de projets open-source et de rapports industriels. L'accent est mis sur les avancées récentes et les benchmarks pertinents pour les modèles spécifiés et le marché du XAU/USD.</p>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Les estimations des coûts d'entraînement et des vitesses d'inférence sont qualitatives ou basées sur des caractéristiques de performance typiques, car les chiffres précis dépendent fortement de la taille spécifique des ensembles de données, de l'ingénierie des caractéristiques, des détails d'implémentation et des niveaux d'optimisation. Elles visent à fournir une comparaison relative plutôt que des benchmarks absolus pour une NVIDIA RTX 3060 (variante 12Go VRAM supposée). Voir l'Annexe pour plus de détails sur les considérations relatives à la RTX 3060.</p>
+                    <p class="text-slate-700 leading-relaxed">Les résultats de trading publiés sont cités lorsqu'ils sont disponibles, en particulier ceux provenant de sources évaluées par des pairs ou de blogs réputés en finance quantitative de la période 2023-2025. La nature dynamique des marchés financiers et de la recherche signifie que de nouvelles découvertes émergent constamment.</p>
+                </div>
+            </section>
+
+            <section id="supervised-intro" class="content-section page-break">
+                 <div class="content-card">
+                    <h2 class="section-title">3. Modèles d'Apprentissage Supervisé pour le Trading XAU/USD</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Les modèles d'apprentissage supervisé sont entraînés sur des données historiques où les caractéristiques d'entrée (par exemple, prix passés, indicateurs techniques, données macroéconomiques) sont associées à des sorties cibles connues (par exemple, direction future des prix, niveaux de prix spécifiques, signaux d'achat/vente/conservation). Ces modèles apprennent cette cartographie pour faire des prédictions sur de nouvelles données non vues.</p>
+                </div>
+            </section>
+
+            <section id="catboost" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">3.1. CatBoost</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">CatBoost (Categorical Boosting) est un algorithme de gradient boosting sur arbres de décision (GBDT) développé par Yandex. Ses principales caractéristiques architecturales comprennent :</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Boosting Ordonné :</strong> Un schéma de boosting novateur qui aide à combattre la fuite de cible et le surajustement, en particulier avec de petits ensembles de données ou lorsque les caractéristiques catégorielles ont une cardinalité élevée. Il entraîne les modèles sur des permutations aléatoires des données d'entraînement.</li>
+                        <li><strong>Arbres Symétriques (Arbres Oblivious) :</strong> Utilise des arbres de décision oblivious comme apprenants de base, où le même critère de division est utilisé pour tous les nœuds au même niveau. Cela conduit à des modèles plus régularisés, des temps de prédiction plus rapides et une implémentation CPU efficace.</li>
+                        <li><strong>Gestion Avancée des Caractéristiques Catégorielles :</strong> Emploie des techniques sophistiquées comme l'encodage one-hot (pour les caractéristiques à faible cardinalité), les statistiques cibles avec permutations (TS ordonné), et les combinaisons de caractéristiques catégorielles pour utiliser efficacement l'information catégorielle sans prétraitement extensif.</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement :</strong> Modéré à élevé, surtout avec de nombreuses itérations ou des arbres profonds. L'entraînement GPU est bien supporté et significativement plus rapide que le CPU pour les grands ensembles de données. Une RTX 3060 peut gérer des ensembles de données substantiels, mais le temps d'entraînement augmentera avec la taille et la complexité des données. Pour des ensembles de données XAU/USD typiques (par exemple, 1 million de lignes, 50-100 caractéristiques), l'entraînement peut varier de quelques minutes à quelques heures selon l'intensité de l'optimisation des hyperparamètres.</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Très rapide, surtout sur CPU grâce aux arbres symétriques. L'inférence GPU est également rapide. Convient pour la prédiction en temps réel ou quasi réel.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><code>iterations</code> (ou <code>n_estimators</code>) : Nombre d'arbres.</li>
+                        <li><code>learning_rate</code> : Taux d'apprentissage.</li>
+                        <li><code>depth</code> : Profondeur des arbres.</li>
+                        <li><code>l2_leaf_reg</code> : Terme de régularisation L2 sur les poids.</li>
+                        <li><code>border_count</code> (ou <code>max_bin</code>) : Nombre de divisions pour les caractéristiques numériques.</li>
+                        <li><code>cat_features</code> : Indices des caractéristiques catégorielles.</li>
+                        <li><code>task_type</code> : 'CPU' ou 'GPU'.</li>
+                        <li><code>loss_function</code> : Par exemple, 'Logloss' pour la classification, 'RMSE' pour la régression. Pour le trading, des fonctions de perte personnalisées considérant des métriques financières peuvent être bénéfiques.</li>
+                    </ul>
+                    <div class="code-block">
+                        <pre>
+# Exemple d'hyperparamètres pour CatBoostClassifier
+params = {
+    'iterations': 1000,
+    'learning_rate': 0.05,
+    'depth': 6,
+    'l2_leaf_reg': 3,
+    'loss_function': 'Logloss',
+    'eval_metric': 'AUC', # ou 'Accuracy'
+    'task_type': 'GPU', # si GPU disponible
+    'random_seed': 42,
+    'verbose': 200,
+    'early_stopping_rounds': 50
+}
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Excellente gestion des caractéristiques catégorielles nativement.</li>
+                        <li>Robuste contre le surajustement grâce au boosting ordonné et aux arbres symétriques.</li>
+                        <li>Bonne performance souvent avec les paramètres par défaut.</li>
+                        <li>Inférence rapide, surtout sur CPU.</li>
+                        <li>Bon support GPU.</li>
+                        <li>Fournit l'importance des caractéristiques.</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Peut être plus lent à entraîner que LightGBM sur certains ensembles de données, surtout sur CPU si les caractéristiques catégorielles ne sont pas dominantes.</li>
+                        <li>Les arbres symétriques peuvent être moins flexibles que les arbres asymétriques pour certaines structures de données complexes, bien que ce soit souvent une force.</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">Les résultats spécifiques de trading XAU/USD évalués par des pairs pour CatBoost de 2023-2025 sont en cours d'émergence. Généralement, les modèles GBDT comme CatBoost sont largement appliqués en finance. Les études montrent souvent des performances compétitives par rapport à d'autres GBDT. Pour le XAU/USD, l'ingénierie des caractéristiques (par exemple, mesures de volatilité, corrélations avec d'autres actifs, indicateurs de sentiment) est cruciale. La force de CatBoost dans la gestion de divers types de caractéristiques en fait un candidat solide. Recherchez des études le comparant à XGBoost et LightGBM sur des séries temporelles financières ; les résultats dépendent souvent de l'ensemble de données et des caractéristiques.</p>
+                    <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct. Les utilisateurs devraient consulter les articles récents d'ArXiv, SSRN, et les revues de machine learning financier.)</em></p>
+                </div>
+            </section>
+
+            <section id="xgboost" class="content-section page-break">
+                <div class="content-card">
+                    <h3 class="subsection-title">3.2. XGBoost</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">XGBoost (Extreme Gradient Boosting) est un autre algorithme GBDT très efficace et largement utilisé. Son architecture comprend :</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Objectif d'Apprentissage Régularisé :</strong> Intègre des termes de régularisation L1 (Lasso) et L2 (Ridge) dans la fonction de perte pour prévenir le surajustement.</li>
+                        <li><strong>Détection de Division Consciente de la Sparsité :</strong> Gère efficacement les valeurs manquantes en apprenant des directions par défaut pour les valeurs manquantes dans les nœuds des arbres.</li>
+                        <li><strong>Weighted Quantile Sketch :</strong> Pour l'apprentissage approximatif des arbres, permettant une gestion efficace des grands ensembles de données pour trouver les points de division.</li>
+                        <li><strong>Accès Conscient du Cache et Structure en Blocs :</strong> Optimise l'utilisation du matériel en stockant les gradients et Hessiens de manière consciente du cache et en organisant les données en blocs.</li>
+                        <li><strong>Calcul Parallèle et Distribué :</strong> Supporte la construction d'arbres en parallèle et peut être exécuté sur des systèmes distribués.</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement :</strong> Modéré à élevé. L'entraînement GPU (<code>tree_method='gpu_hist'</code>) est significativement plus rapide que le CPU pour les grands ensembles de données. Une RTX 3060 peut entraîner efficacement des modèles XGBoost pour des tailles de données XAU/USD typiques, avec des temps allant de quelques minutes à quelques heures.</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Très rapide sur CPU et GPU. Convient aux applications en temps réel.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><code>n_estimators</code> : Nombre de cycles de boosting (arbres).</li>
+                        <li><code>learning_rate</code> (ou <code>eta</code>) : Taux d'apprentissage.</li>
+                        <li><code>max_depth</code> : Profondeur maximale d'un arbre.</li>
+                        <li><code>subsample</code> : Fraction des échantillons utilisés pour ajuster les apprenants de base individuels.</li>
+                        <li><code>colsample_bytree</code>, <code>colsample_bylevel</code>, <code>colsample_bynode</code> : Sous-échantillonnage des colonnes.</li>
+                        <li><code>gamma</code> (ou <code>min_split_loss</code>) : Réduction minimale de la perte requise pour effectuer une partition supplémentaire.</li>
+                        <li><code>reg_alpha</code> (L1) et <code>reg_lambda</code> (L2) : Termes de régularisation.</li>
+                        <li><code>tree_method</code> : Par exemple, 'auto', 'exact', 'approx', 'hist', 'gpu_hist'.</li>
+                    </ul>
+                     <div class="code-block">
+                        <pre>
+# Exemple d'hyperparamètres pour XGBClassifier
+params = {
+    'n_estimators': 1000,
+    'learning_rate': 0.05,
+    'max_depth': 5,
+    'subsample': 0.8,
+    'colsample_bytree': 0.8,
+    'gamma': 0.1,
+    'reg_alpha': 0.01,
+    'reg_lambda': 0.1,
+    'objective': 'binary:logistic', # pour classification binaire
+    'eval_metric': 'auc',
+    'tree_method': 'gpu_hist', # si GPU disponible
+    'seed': 42
+}
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Haute précision prédictive, souvent l'un des meilleurs performeurs dans les compétitions.</li>
+                        <li>Excellentes capacités de régularisation.</li>
+                        <li>Gestion efficace des données manquantes.</li>
+                        <li>Scalable grâce au support du traitement parallèle et distribué.</li>
+                        <li>Bibliothèque mature avec une documentation étendue et un support communautaire.</li>
+                        <li>Fournit l'importance des caractéristiques.</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Peut être plus sensible à l'optimisation des hyperparamètres que certains autres modèles.</li>
+                        <li>La gestion des caractéristiques catégorielles nécessite généralement un prétraitement (par exemple, encodage one-hot, encodage par étiquette), contrairement à CatBoost.</li>
+                        <li>L'entraînement peut être gourmand en mémoire pour de très grands ensembles de données avec des méthodes d'arbre exactes.</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">XGBoost est un pilier de la finance quantitative. De nombreuses études l'appliquent à divers actifs, y compris le XAU/USD, démontrant souvent de solides performances dans la prédiction des mouvements de prix ou la génération de signaux de trading. La recherche récente (2023-2025) continue d'explorer son utilisation avec des techniques avancées d'ingénierie des caractéristiques (par exemple, incorporation de données alternatives, sentiment NLP à partir de nouvelles) et dans des modèles hybrides. Sa capacité à capturer des relations non linéaires est précieuse pour des marchés complexes comme celui de l'or. La performance dépend fortement de la sélection des caractéristiques et d'une validation robuste pour éviter le surajustement aux données historiques du XAU/USD.</p>
+                     <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct.)</em></p>
+                </div>
+            </section>
+
+            <section id="lightgbm" class="content-section page-break">
+                 <div class="content-card">
+                    <h3 class="subsection-title">3.3. LightGBM</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">LightGBM (Light Gradient Boosting Machine) est un autre framework GBDT de Microsoft, conçu pour la vitesse et l'efficacité. Ses principales innovations architecturales comprennent :</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Gradient-based One-Side Sampling (GOSS) :</strong> Conserve les instances avec de grands gradients (plus informatives pour l'entraînement) et supprime aléatoirement les instances avec de petits gradients pour accélérer l'entraînement sans sacrifier beaucoup de précision.</li>
+                        <li><strong>Exclusive Feature Bundling (EFB) :</strong> Regroupe les caractéristiques mutuellement exclusives (caractéristiques qui prennent rarement des valeurs non nulles simultanément) pour réduire la dimensionnalité des caractéristiques.</li>
+                        <li><strong>Croissance d'Arbre par Feuille (Leaf-wise) :</strong> Fait croître les arbres en choisissant la feuille avec la perte delta maximale à développer. Cela peut conduire à des arbres plus complexes et potentiellement à un surajustement si ce n'est pas contrôlé (par exemple, par <code>max_depth</code> ou <code>num_leaves</code>), mais se traduit souvent par une meilleure précision que la croissance par niveau.</li>
+                        <li><strong>Algorithme Basé sur Histogramme :</strong> Discrétise les valeurs des caractéristiques continues en bacs discrets, ce qui accélère considérablement l'entraînement et réduit l'utilisation de la mémoire.</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement :</strong> Généralement faible à modéré. Souvent plus rapide que XGBoost et CatBoost, surtout sur CPU pour les grands ensembles de données. L'entraînement GPU (<code>device='gpu'</code>) est également très efficace. Une RTX 3060 peut entraîner des modèles LightGBM très rapidement pour des ensembles de données XAU/USD typiques.</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Très rapide, comparable ou plus rapide que XGBoost. Excellent pour les scénarios en temps réel.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><code>n_estimators</code> : Nombre d'arbres boostés à ajuster.</li>
+                        <li><code>learning_rate</code> : Taux d'apprentissage du boosting.</li>
+                        <li><code>num_leaves</code> : Nombre maximal de feuilles d'arbre pour les apprenants de base (paramètre clé pour contrôler la complexité avec la croissance par feuille).</li>
+                        <li><code>max_depth</code> : Profondeur maximale de l'arbre pour les apprenants de base, -1 signifie aucune limite.</li>
+                        <li><code>subsample</code> (ou <code>bagging_fraction</code>) : Ratio de sous-échantillonnage de l'instance d'entraînement.</li>
+                        <li><code>colsample_bytree</code> (ou <code>feature_fraction</code>) : Ratio de sous-échantillonnage des colonnes lors de la construction de chaque arbre.</li>
+                        <li><code>reg_alpha</code> (L1) et <code>reg_lambda</code> (L2) : Termes de régularisation.</li>
+                        <li><code>min_child_samples</code> (ou <code>min_data_in_leaf</code>) : Nombre minimum de données nécessaires dans un enfant (feuille).</li>
+                        <li><code>device</code> : 'cpu' ou 'gpu'.</li>
+                    </ul>
+                    <div class="code-block">
+                        <pre>
+# Exemple d'hyperparamètres pour LGBMClassifier
+params = {
+    'n_estimators': 1000,
+    'learning_rate': 0.05,
+    'num_leaves': 31, # Défaut, souvent un bon point de départ
+    'max_depth': -1, # Aucune limite, contrôlée par num_leaves
+    'subsample': 0.8,
+    'colsample_bytree': 0.8,
+    'reg_alpha': 0.1,
+    'reg_lambda': 0.1,
+    'min_child_samples': 20,
+    'objective': 'binary', # pour classification binaire
+    'metric': 'auc',
+    'boosting_type': 'gbdt', # ou 'dart', 'goss'
+    'device': 'gpu', # si GPU disponible
+    'random_state': 42
+}
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Vitesse d'entraînement très rapide et haute efficacité, surtout sur de grands ensembles de données.</li>
+                        <li>Utilisation de mémoire inférieure par rapport à d'autres algorithmes GBDT.</li>
+                        <li>Bonne précision, souvent comparable à XGBoost.</li>
+                        <li>Supporte directement les caractéristiques catégorielles (bien que bénéficiant souvent de l'encodage).</li>
+                        <li>Excellent support GPU.</li>
+                        <li>Fournit l'importance des caractéristiques.</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Peut être sujet au surajustement sur de petits ensembles de données si des paramètres comme <code>num_leaves</code> ne sont pas soigneusement ajustés.</li>
+                        <li>La croissance par feuille peut parfois conduire à des arbres individuels trop complexes.</li>
+                        <li>Peut nécessiter une optimisation des hyperparamètres plus minutieuse que CatBoost pour des performances optimales.</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">LightGBM est fréquemment utilisé en modélisation financière en raison de sa vitesse et de son efficacité. Pour le trading XAU/USD, sa capacité à itérer rapidement sur les ensembles de caractéristiques et les configurations d'hyperparamètres est un avantage significatif. Les études récentes (2023-2025) incluent souvent LightGBM dans les comparaisons, où il performe généralement bien, en particulier lorsque les ressources de calcul ou le temps d'entraînement sont des contraintes. Comme avec d'autres GBDT, le succès dans le trading XAU/USD dépend d'une ingénierie des caractéristiques robuste et de stratégies de validation croisée adaptées aux séries temporelles financières (par exemple, validation progressive).</p>
+                    <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct.)</em></p>
+                </div>
+            </section>
+
+            <section id="tabpfn" class="content-section page-break">
+                <div class="content-card">
+                    <h3 class="subsection-title">3.4. TabPFN (Tabular Prior-Data Fitted Network)</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">TabPFN est une approche novatrice qui exploite un grand modèle Transformer pré-entraîné pour effectuer la classification de données tabulaires. Il est conçu pour faire des prédictions sur de petits ensembles de données tabulaires (<~1000 échantillons, <~100 caractéristiques, <~10 classes) *sans nécessiter d'optimisation des hyperparamètres* pendant l'inférence.</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Transformer Pré-entraîné :</strong> Le cœur est un réseau Transformer (Encodeur uniquement) qui a été entraîné sur une vaste collection d'ensembles de données synthétiques générés à partir de divers modèles causals structurels. Ce pré-entraînement lui permet d'apprendre un a priori sur les fonctions de classification simples.</li>
+                        <li><strong>Apprentissage en Contexte (In-Context Learning) :</strong> Au moment de l'inférence, TabPFN prend l'ensemble du nouvel ensemble de données d'entraînement (petit) comme entrée (caractéristiques et étiquettes concaténées) et produit directement des prédictions pour les échantillons de test. Il effectue efficacement un apprentissage "en contexte" ou méta-apprentissage.</li>
+                        <li><strong>Pas d'Ajustement Fin/Optimisation d'Hyperparamètres à l'Inférence :</strong> Le modèle pré-entraîné est utilisé tel quel. Les "hyperparamètres" sont essentiellement fixés par le processus de pré-entraînement.</li>
+                        <li><strong>Focus sur les Petites Données :</strong> Spécifiquement conçu pour les scénarios où les données sont limitées et où l'optimisation approfondie des modèles traditionnels n'est pas réalisable.</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement (Perspective Utilisateur) :</strong> Effectivement nul pour l'utilisateur final, car le modèle est pré-entraîné. L'utilisateur n'entraîne pas TabPFN. Le pré-entraînement original par ses créateurs était très coûteux en calcul.</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Rapide pour les petits ensembles de données auxquels il est destiné. Une RTX 3060 peut exécuter rapidement les inférences. La vitesse dépend du nombre d'échantillons dans le nouvel ensemble de données (qui fait partie de la séquence d'entrée du Transformer) et du nombre de points de test. Pour le XAU/USD, s'il est appliqué pour prédire, par exemple, la direction du lendemain sur la base des N derniers jours (où N est petit, par exemple <1000), l'inférence serait rapide.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés (Perspective Utilisateur) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Essentiellement aucun à ajuster par l'utilisateur pour une tâche spécifique.</li>
+                        <li>Le principal "choix" est de savoir si le problème correspond aux contraintes de TabPFN (petit N, D, C).</li>
+                        <li>Certains paramètres de temps d'inférence peuvent exister dans les implémentations (par exemple, la taille du lot pour les prédictions de test si de nombreux points sont prédits).</li>
+                    </ul>
+                     <div class="code-block">
+                        <pre>
+# Utilisation conceptuelle de TabPFN
+from tabpfn import TabPFNClassifier
+# classifier = TabPFNClassifier(device='cuda' if torch.cuda.is_available() else 'cpu', N_ensemble_configurations=32) 
+# Pas d'hyperparamètres traditionnels à ajuster pour le modèle lui-même.
+# classifier.fit(X_train, y_train) # 'fit' s'apparente plus à conditionner le modèle sur les nouvelles données
+# y_pred = classifier.predict(X_test)
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Excellente performance sur les petits ensembles de données tabulaires, surpassant souvent les GBDT optimisés.</li>
+                        <li>Aucune optimisation d'hyperparamètres requise par l'utilisateur, ce qui économise un effort considérable.</li>
+                        <li>Très rapide à déployer si le problème correspond à ses contraintes.</li>
+                        <li>Fournit rapidement une base de référence solide.</li>
+                        <li>Gère les caractéristiques hétérogènes (numériques, catégorielles après encodage).</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Limitations strictes sur la taille de l'ensemble de données (échantillons, caractéristiques, classes). Ne convient pas directement aux grands ensembles de données XAU/USD, sauf si les données sont fenêtrées ou échantillonnées de manière appropriée.</li>
+                        <li>Moins interprétable que les modèles basés sur les arbres de décision (c'est un Transformer).</li>
+                        <li>Les performances peuvent se dégrader si la distribution des nouvelles données est très différente des données synthétiques sur lesquelles il a été entraîné.</li>
+                        <li>Principalement conçu pour la classification ; les versions pour la régression pourraient être moins matures ou disponibles.</li>
+                        <li>Nécessite des entrées numériques ; les caractéristiques catégorielles doivent être pré-encodées.</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">TabPFN est un modèle relativement nouveau (popularisé vers 2022-2023). Les applications spécifiques au trading XAU/USD dans la littérature évaluée par des pairs de 2023-2025 sont probablement encore émergentes. Son principal attrait pour le trading résiderait dans des scénarios avec des données historiques limitées pour un régime ou une stratégie spécifique, ou pour le prototypage rapide d'idées sur de petites fenêtres de données. Pour le XAU/USD, on pourrait l'utiliser pour prédire les mouvements à court terme sur la base d'une petite fenêtre récente de caractéristiques. Sa performance par rapport aux GBDT bien optimisés sur des ensembles de données financières plus grands et typiques est une question de recherche ouverte, car ce n'est pas sa cible de conception principale.</p>
+                    <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct. Concentrez-vous sur ses performances dans des contextes généraux de petites données tabulaires.)</em></p>
+                </div>
+            </section>
+
+            <section id="tft" class="content-section page-break">
+                <div class="content-card">
+                    <h3 class="subsection-title">3.5. Temporal Fusion Transformer (TFT)</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">Le Temporal Fusion Transformer (TFT), développé par Google, est spécifiquement conçu pour la prévision multi-horizon avec des données de séries temporelles hétérogènes. Il combine des éléments des LSTM, des mécanismes d'attention et du traitement des covariables statiques.</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Mécanismes de Contrôle (Gating) :</strong> Utilise des blocs Gated Residual Network (GRN) dans toute l'architecture pour sauter sélectivement des couches ou filtrer des informations, inspirés des LSTM et GRU.</li>
+                        <li><strong>Réseaux de Sélection de Variables :</strong> Emploie des plongements d'entités (entity embeddings) et des GRN pour apprendre l'importance des différentes variables d'entrée (statiques, entrées futures connues, entrées passées observées) à chaque pas de temps.</li>
+                        <li><strong>Encodeurs de Covariables Statiques :</strong> Traite les métadonnées statiques (par exemple, ID de l'article, emplacement) pour fournir un contexte.</li>
+                        <li><strong>Traitement Temporel :</strong> Utilise une couche LSTM ou GRU pour traiter les informations séquentielles des entrées passées observées et des entrées futures connues. Ceci est suivi d'une couche d'auto-attention multi-têtes (interprétable) pour capturer les dépendances temporelles à long terme.</li>
+                        <li><strong>Tête de Prédiction :</strong> Produit des prévisions quantiles pour plusieurs pas de temps futurs, fournissant des intervalles de prédiction.</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement :</strong> Élevé. TFT est un modèle d'apprentissage profond complexe. L'entraînement nécessite des ressources de calcul et du temps importants, en particulier avec de grands ensembles de données et de longues séquences. Une RTX 3060 (12Go) peut entraîner des modèles TFT, mais les tailles de lot devront peut-être être modestes, et l'entraînement pourrait prendre de nombreuses heures à plusieurs jours pour des ensembles de données XAU/USD substantiels avec des caractéristiques riches. Une gestion minutieuse de la mémoire est nécessaire.</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Modérée. Plus rapide que l'entraînement, mais implique toujours plusieurs composants. Pour la prévision multi-étapes, il peut être efficace car il prédit tous les horizons simultanément.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><code>hidden_size</code> : Taille des principales couches cachées.</li>
+                        <li><code>lstm_layers</code> : Nombre de couches LSTM dans le processeur temporel.</li>
+                        <li><code>num_heads</code> : Nombre de têtes d'attention.</li>
+                        <li><code>dropout</code> : Taux de dropout.</li>
+                        <li><code>learning_rate</code> : Taux d'apprentissage de l'optimiseur.</li>
+                        <li><code>batch_size</code> : Nombre d'échantillons par lot d'entraînement.</li>
+                        <li><code>max_epochs</code> : Nombre maximal d'époques d'entraînement.</li>
+                        <li><code>static_categoricals</code>, <code>static_reals</code>, <code>time_varying_known_categoricals</code>, etc. : Définition des types de caractéristiques d'entrée.</li>
+                        <li><code>quantiles</code> : Pour la sortie de régression quantile.</li>
+                    </ul>
+                    <div class="code-block">
+                        <pre>
+# Exemple de paramètres TFT (utilisant la bibliothèque PyTorch Forecasting)
+# Ce sont des paramètres conceptuels, les paramètres réels dépendent de l'implémentation de la bibliothèque.
+tft_params = {
+    'hidden_size': 64,
+    'lstm_layers': 2,
+    'num_heads': 4,
+    'dropout': 0.1,
+    'output_size': 7, # Nombre de quantiles pour la prédiction
+    # ... autres paramètres comme learning_rate, batch_size
+}
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Performance de pointe sur de nombreuses tâches de prévision multi-horizon.</li>
+                        <li>Gère des séries temporelles complexes avec des caractéristiques statiques et dynamiques (entrées futures connues, entrées passées observées).</li>
+                        <li>Fournit des informations interprétables grâce à l'importance des variables et aux poids d'attention.</li>
+                        <li>Produit des prévisions quantiles, utiles pour l'évaluation des risques dans le trading.</li>
+                        <li>Peut capturer efficacement les dépendances à long terme.</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Coût de calcul élevé pour l'entraînement.</li>
+                        <li>Architecture complexe, peut être difficile à implémenter et à optimiser.</li>
+                        <li>Nécessite une ingénierie des caractéristiques et une préparation des données minutieuses.</li>
+                        <li>Sensible aux choix d'hyperparamètres.</li>
+                        <li>Peut être excessif pour des problèmes de prévision plus simples ou des prédictions à très court terme où des modèles plus simples suffisent.</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">TFT a montré de solides résultats dans divers domaines de prévision (vente au détail, énergie). Son application aux marchés financiers, y compris le XAU/USD, est un domaine de recherche actif. Compte tenu de sa capacité à modéliser de multiples entrées et à fournir des prévisions quantiles, il est bien adapté aux stratégies de trading sophistiquées qui nécessitent des prédictions de prix probabilistes. Les articles de 2023-2025 pourraient présenter son utilisation pour le XAU/USD, en se concentrant probablement sur sa capacité à incorporer des indicateurs macroéconomiques (entrées futures connues si annoncées, par exemple, les dates de publication de l'IPC) parallèlement à l'historique des prix. Ses caractéristiques d'interprétabilité pourraient également être précieuses pour comprendre les moteurs du marché de l'or.</p>
+                     <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct. Recherchez des applications en prévision financière générale.)</em></p>
+                </div>
+            </section>
+
+            <section id="lstm" class="content-section page-break">
+                <div class="content-card">
+                    <h3 class="subsection-title">3.6. Long Short-Term Memory (LSTM)</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">Les LSTM sont un type de Réseau de Neurones Récurrents (RNN) spécifiquement conçu pour résoudre le problème de la disparition/explosion du gradient, leur permettant d'apprendre des dépendances à long terme dans les données séquentielles. Les composants clés comprennent :</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>État de Cellule (Cell State) :</strong> Une ligne horizontale traversant l'unité LSTM qui transporte l'information à travers la séquence, avec des interactions linéaires mineures.</li>
+                        <li><strong>Portes (Gates) :</strong>
+                            <ul class="styled-list">
+                                <li><strong>Porte d'Oubli (Forget Gate) :</strong> Décide quelles informations jeter de l'état de cellule.</li>
+                                <li><strong>Porte d'Entrée (Input Gate) :</strong> Décide quelles nouvelles informations stocker dans l'état de cellule.</li>
+                                <li><strong>Porte de Sortie (Output Gate) :</strong> Décide quoi sortir en fonction de l'état de cellule.</li>
+                            </ul>
+                        </li>
+                        <li>Les LSTM peuvent être empilés en plusieurs couches pour apprendre des représentations plus complexes. Les LSTM bidirectionnels (BiLSTM) traitent les séquences dans les deux sens, capturant le contexte du passé et du futur (au moment de l'entraînement).</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement :</strong> Modéré à élevé, en fonction de la longueur de la séquence, du nombre de couches, des unités cachées et de la taille de l'ensemble de données. Une RTX 3060 peut entraîner des LSTM pour la prévision XAU/USD, mais l'entraînement peut prendre des heures pour des modèles profonds ou de grands ensembles de données.</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Modérée. Plus lente que les réseaux à propagation avant simples ou les GBDT en raison du traitement séquentiel, mais généralement acceptable pour de nombreuses applications de trading si le modèle n'est pas excessivement profond.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><code>units</code> (ou <code>hidden_size</code>) : Dimensionnalité de l'espace de sortie / état caché.</li>
+                        <li><code>num_layers</code> : Nombre de couches LSTM empilées.</li>
+                        <li><code>dropout</code> : Taux de dropout pour la régularisation.</li>
+                        <li><code>recurrent_dropout</code> : Dropout sur les connexions récurrentes.</li>
+                        <li><code>learning_rate</code> : Taux d'apprentissage de l'optimiseur.</li>
+                        <li><code>batch_size</code> : Nombre d'échantillons par lot d'entraînement.</li>
+                        <li><code>sequence_length</code> (ou <code>timesteps</code>) : Longueur des séquences d'entrée.</li>
+                        <li>Fonctions d'activation pour les portes (généralement sigmoïde) et les mises à jour de l'état de cellule (généralement tanh).</li>
+                    </ul>
+                     <div class="code-block">
+                        <pre>
+# Exemple de modèle Keras LSTM (conceptuel)
+# from tensorflow.keras.models import Sequential
+# from tensorflow.keras.layers import LSTM, Dropout, Dense
+# model = Sequential()
+# model.add(LSTM(units=64, input_shape=(sequence_length, num_features), return_sequences=True)) # si empilement
+# model.add(Dropout(0.2))
+# model.add(LSTM(units=32))
+# model.add(Dense(1, activation='sigmoid')) # pour classification binaire (par ex. hausse/baisse)
+# model.compile(optimizer='adam', loss='binary_crossentropy')
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Efficace pour capturer les dépendances à long terme dans les données de séries temporelles.</li>
+                        <li>Peut modéliser des relations non linéaires complexes.</li>
+                        <li>Largement utilisé et bien compris dans la modélisation de séquences.</li>
+                        <li>De nombreuses variantes existent (par exemple, GRU, BiLSTM, Attention-LSTM).</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Peut être coûteux en calcul à entraîner.</li>
+                        <li>Sujet au surajustement s'il n'est pas correctement régularisé.</li>
+                        <li>L'optimisation des hyperparamètres peut être difficile.</li>
+                        <li>L'interprétabilité peut être difficile par rapport à des modèles plus simples.</li>
+                        <li>Peut avoir du mal avec de très longues séquences par rapport aux Transformers, malgré leur conception.</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">Les LSTM ont été largement appliqués à la prévision financière, y compris la prédiction des prix du XAU/USD. De nombreuses études montrent leur potentiel, en particulier lorsqu'ils sont combinés avec une ingénierie des caractéristiques appropriée (par exemple, indicateurs techniques, données de sentiment). La recherche de 2023-2025 se concentre souvent sur les modèles hybrides (par exemple, CNN-LSTM, LSTM avec attention) pour améliorer les performances ou comparer les LSTM à des architectures plus récentes comme les Transformers. Pour le XAU/USD, les LSTM peuvent modéliser ses dynamiques temporelles, mais le succès dépend de la qualité des données, de la pertinence des caractéristiques et de l'évitement du surajustement aux données financières bruitées.</p>
+                    <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct.)</em></p>
+                </div>
+            </section>
+
+            <section id="tcn" class="content-section page-break">
+                <div class="content-card">
+                    <h3 class="subsection-title">3.7. Temporal Convolutional Network (TCN)</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">Les TCN adaptent les réseaux de neurones convolutifs (CNN) aux tâches de modélisation de séquences. Ils utilisent des convolutions causales et dilatées pour capturer les dépendances temporelles.</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Convolutions Causales :</strong> Assurent que la prédiction pour le pas de temps `t` ne dépend que des entrées de `t-1` et antérieures, empêchant la fuite d'informations du futur. Ceci est réalisé en remplissant (padding) la séquence d'entrée de manière appropriée.</li>
+                        <li><strong>Convolutions Dilatées :</strong> Permettent au champ réceptif du réseau de croître de manière exponentielle avec la profondeur sans augmentation proportionnelle des paramètres ou du coût de calcul. Cela se fait en sautant des valeurs d'entrée avec un certain pas (facteur de dilatation). L'empilement de couches convolutives dilatées permet aux TCN de capturer des dépendances à très long terme.</li>
+                        <li><strong>Connexions Résiduelles :</strong> Les TCN utilisent généralement des blocs résiduels, similaires aux ResNets, pour faciliter l'entraînement de réseaux profonds en permettant aux gradients de se propager plus facilement.</li>
+                        <li>Traitement parallèle des séquences (contrairement aux RNN qui sont intrinsèquement séquentiels).</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement :</strong> Modéré. Généralement plus rapide à entraîner que les LSTM pour des séquences de champs réceptifs effectifs similaires car les convolutions peuvent être parallélisées dans le temps. Une RTX 3060 peut gérer efficacement l'entraînement des TCN.</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Rapide, en raison de la nature parallèle des convolutions. Souvent plus rapide que les LSTM pour l'inférence.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><code>nb_filters</code> : Nombre de filtres dans les couches convolutives.</li>
+                        <li><code>kernel_size</code> : Taille des noyaux convolutifs.</li>
+                        <li><code>dilations</code> : Liste des facteurs de dilatation pour chaque couche (par exemple, <code>[1, 2, 4, 8, 16]</code>).</li>
+                        <li><code>nb_stacks</code> : Nombre de répétitions des blocs de convolution dilatée.</li>
+                        <li><code>dropout_rate</code> : Dropout pour la régularisation.</li>
+                        <li><code>activation</code> : Fonction d'activation (par exemple, 'relu').</li>
+                        <li><code>use_skip_connections</code> : Utiliser ou non les connexions résiduelles.</li>
+                        <li><code>padding</code> : 'causal' est essentiel pour les séries temporelles.</li>
+                    </ul>
+                     <div class="code-block">
+                        <pre>
+# Exemple de paramètres TCN (utilisant une bibliothèque comme Keras-TCN)
+# from tcn import TCN
+# tcn_layer = TCN(nb_filters=64, kernel_size=3, nb_stacks=1, dilations=[1, 2, 4, 8], 
+#                 padding='causal', use_skip_connections=True, dropout_rate=0.1, 
+#                 activation='relu', input_shape=(sequence_length, num_features))
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Peut capturer des dépendances à très long terme grâce aux convolutions dilatées.</li>
+                        <li>Les calculs parallélisables conduisent à un entraînement et une inférence plus rapides que les RNN.</li>
+                        <li>Gradients stables (évite les problèmes de disparition/explosion du gradient des RNN simples).</li>
+                        <li>Taille flexible du champ réceptif, contrôlée par la taille du noyau, les dilatations et le nombre de couches.</li>
+                        <li>Atteint souvent des performances compétitives ou supérieures à celles des LSTM sur les tâches de séquences.</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>La consommation de mémoire peut être élevée pour de très longues séquences si elle n'est pas gérée, car les activations intermédiaires pour tous les pas de temps pourraient être stockées.</li>
+                        <li>Pas aussi intrinsèquement adapté aux longueurs de séquence dynamiques que les RNN (bien que le padding puisse gérer cela).</li>
+                        <li>L'interprétabilité peut être difficile, similaire à d'autres modèles d'apprentissage profond.</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">Les TCN sont de plus en plus explorés pour la prévision de séries temporelles financières, y compris le XAU/USD. Leur capacité à modéliser efficacement les longues dépendances les rend attrayants. Les études de 2023-2025 sont susceptibles de comparer les TCN aux LSTM et aux Transformers pour la prédiction XAU/USD, soulignant souvent leurs avantages computationnels et leur forte puissance prédictive. Le succès, comme toujours, dépend de l'ingénierie des caractéristiques, de la qualité des données et d'une validation robuste. Les TCN pourraient être particulièrement efficaces pour capturer les tendances persistantes ou les schémas cycliques des prix de l'or.</p>
+                    <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct.)</em></p>
+                </div>
+            </section>
+
+            <section id="rl-intro" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">4. Modèles d'Apprentissage par Renforcement pour le Trading XAU/USD</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Les modèles d'Apprentissage par Renforcement (RL) apprennent des stratégies de trading optimales en interagissant avec l'environnement du marché. Un agent prend des actions (acheter, vendre, conserver) en fonction de l'état actuel (données de marché, statut du portefeuille), reçoit une récompense (profit/perte), et met à jour sa politique pour maximiser les récompenses futures cumulées. Cela diffère de l'apprentissage supervisé, où des étiquettes explicites d'achat/vente sont requises.</p>
+                </div>
+            </section>
+
+            <section id="dqn" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">4.1. Deep Q-Network (DQN)</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">DQN combine le Q-learning avec des réseaux de neurones profonds pour gérer des espaces d'états de haute dimension. Il est principalement conçu pour des espaces d'actions discrets (par exemple, acheter, vendre, conserver).</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Réseau Q (Q-Network) :</strong> Un réseau de neurones profonds (souvent un CNN pour les états basés sur des images ou un MLP pour les états vectoriels) qui approxime la fonction action-valeur Q(s, a), qui est le retour attendu en partant de l'état `s`, en prenant l'action `a`, et en suivant ensuite la politique optimale.</li>
+                        <li><strong>Rejeu d'Expérience (Experience Replay) :</strong> Stocke les transitions passées (état, action, récompense, état_suivant) dans un tampon de rejeu. Pendant l'entraînement, des mini-lots sont échantillonnés aléatoirement à partir de ce tampon pour rompre les corrélations et améliorer la stabilité.</li>
+                        <li><strong>Réseau Cible (Target Network) :</strong> Un réseau Q séparé (une copie périodiquement mise à jour du réseau Q principal) est utilisé pour générer les valeurs Q cibles pour la mise à jour de Bellman. Cela aide à stabiliser l'entraînement en maintenant les valeurs cibles fixes pendant une période.</li>
+                        <li><strong>Exploration Epsilon-Gloutonne (Epsilon-Greedy) :</strong> L'agent choisit une action aléatoire avec une probabilité epsilon (qui diminue généralement avec le temps) et l'action gloutonne (avec la valeur Q la plus élevée) avec une probabilité 1-epsilon.</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement :</strong> Élevé. L'entraînement RL implique une interaction intensive avec l'environnement (ou une simulation). L'entraînement du réseau Q peut prendre de nombreuses époques et épisodes. Une RTX 3060 peut faciliter cela, mais les temps d'entraînement pour les environnements de trading XAU/USD peuvent varier de nombreuses heures à des jours, voire des semaines, pour converger vers une bonne politique, en fonction de la complexité de l'environnement et de la structure des récompenses.</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Rapide. Une fois entraîné, le réseau Q effectue une passe avant pour obtenir les valeurs Q des actions, ce qui est rapide.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><code>learning_rate</code> : Pour l'optimiseur du réseau Q.</li>
+                        <li><code>gamma</code> : Facteur d'actualisation pour les récompenses futures.</li>
+                        <li><code>epsilon_start</code>, <code>epsilon_end</code>, <code>epsilon_decay</code> : Pour l'exploration epsilon-gloutonne.</li>
+                        <li><code>batch_size</code> : Pour l'échantillonnage à partir du tampon de rejeu.</li>
+                        <li><code>buffer_size</code> : Taille du tampon de rejeu.</li>
+                        <li><code>target_update_frequency</code> : Fréquence de mise à jour du réseau cible.</li>
+                        <li>Architecture du réseau de neurones : Nombre de couches, d'unités, fonctions d'activation pour le réseau Q.</li>
+                    </ul>
+                    <div class="code-block">
+                        <pre>
+# Hyperparamètres DQN conceptuels
+dqn_params = {
+    'learning_rate': 1e-4,
+    'gamma': 0.99,
+    'epsilon_start': 1.0,
+    'epsilon_end': 0.01,
+    'epsilon_decay_steps': 100000,
+    'batch_size': 64,
+    'buffer_size': 100000,
+    'target_update_freq': 1000, # pas
+    # Architecture du réseau Q (par ex., couches cachées [256, 128] pour MLP)
+}
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Peut apprendre des stratégies complexes dans des espaces d'états de haute dimension.</li>
+                        <li>L'apprentissage hors politique (off-policy) permet de réutiliser efficacement les expériences passées.</li>
+                        <li>Algorithme pionnier en apprentissage par renforcement profond avec de nombreuses applications réussies.</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Peut être instable et sensible aux choix d'hyperparamètres.</li>
+                        <li>Souffre de la surestimation des valeurs Q (corrigé par Double DQN).</li>
+                        <li>Limité aux espaces d'actions discrets (bien que des extensions existent pour le continu). Pour le trading, cela signifie souvent discrétiser les tailles de position ou avoir des actions comme {acheter_quantité_fixe, vendre_quantité_fixe, conserver}.</li>
+                        <li>Inefficacité d'échantillonnage : nécessite souvent un très grand nombre d'interactions.</li>
+                        <li>Définir une bonne fonction de récompense pour le trading est crucial et difficile (par exemple, profit simple vs. ratio de Sharpe, en tenant compte des coûts de transaction).</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">DQN et ses variantes sont couramment explorés pour le trading algorithmique. Pour le XAU/USD, la recherche se concentre souvent sur la conception de représentations d'état appropriées (par exemple, historique des prix, indicateurs techniques, statut du portefeuille) et de fonctions de récompense qui intègrent les coûts de transaction et le risque. Les études de 2023-2025 pourraient montrer que DQN atteint la rentabilité dans des environnements XAU/USD simulés, mais combler l'écart vers une performance constante en trading réel reste un défi important en raison de la non-stationnarité du marché et de l'écart entre la simulation et la réalité. Les comparaisons avec PPO ou SAC dans des contextes financiers sont également courantes.</p>
+                    <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct.)</em></p>
+                </div>
+            </section>
+
+            <section id="ppo" class="content-section page-break">
+                <div class="content-card">
+                    <h3 class="subsection-title">4.2. Proximal Policy Optimization (PPO)</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">PPO est un algorithme acteur-critique en politique (on-policy) qui vise des mises à jour de politique plus stables et fiables par rapport aux méthodes de gradient de politique standard. Il est connu pour son bon équilibre entre efficacité d'échantillonnage, facilité d'implémentation et performance.</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Structure Acteur-Critique :</strong>
+                            <ul class="styled-list">
+                                <li><strong>Réseau Acteur :</strong> Apprend la politique (une cartographie de l'état à la distribution de probabilité d'action pour les actions discrètes, ou moyenne/écart-type pour les actions continues).</li>
+                                <li><strong>Réseau Critique :</strong> Apprend la fonction de valeur V(s) (retour attendu de l'état `s`) ou la fonction action-valeur Q(s,a), utilisée pour estimer les avantages.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Objectif Substitut Clipé :</strong> PPO contraint la taille de la mise à jour de la politique à chaque étape en clipsant la fonction objectif. Cela empêche les mises à jour excessivement importantes qui peuvent déstabiliser l'entraînement. La fonction objectif implique le ratio des probabilités d'une action sous les nouvelles et anciennes politiques, multiplié par l'estimation de l'avantage.</li>
+                        <li><strong>Generalized Advantage Estimation (GAE) :</strong> Souvent utilisé avec PPO pour réduire la variance dans les estimations d'avantages en utilisant une moyenne pondérée des erreurs TD multi-étapes.</li>
+                        <li>Plusieurs époques de mises à jour par mini-lots sur le même lot d'expérience.</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement :</strong> Élevé, similaire à d'autres algorithmes de RL profond. Nécessite une interaction environnementale significative. Une RTX 3060 peut supporter l'entraînement PPO pour le trading XAU/USD. Les temps d'entraînement peuvent être substantiels (heures à jours/semaines).</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Rapide. Implique une passe avant à travers le réseau acteur pour sélectionner une action.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><code>learning_rate</code> : Pour les optimiseurs des réseaux acteur et critique.</li>
+                        <li><code>gamma</code> : Facteur d'actualisation.</li>
+                        <li><code>gae_lambda</code> : Lambda pour GAE.</li>
+                        <li><code>clip_epsilon</code> (ou <code>clip_range</code>) : Paramètre de clipping pour l'objectif substitut.</li>
+                        <li><code>vf_coef</code> (ou <code>critic_loss_coef</code>) : Coefficient pour la perte de la fonction de valeur.</li>
+                        <li><code>ent_coef</code> (ou <code>entropy_coef</code>) : Coefficient pour le bonus d'entropie (encourage l'exploration).</li>
+                        <li><code>n_steps</code> (ou <code>rollout_buffer_size</code>) : Nombre de pas pour collecter des données pour chaque mise à jour de politique.</li>
+                        <li><code>n_epochs</code> : Nombre d'époques pour s'entraîner sur les données collectées.</li>
+                        <li><code>batch_size</code> : Taille des mini-lots pour les mises à jour.</li>
+                        <li>Architectures des réseaux Acteur/Critique.</li>
+                    </ul>
+                     <div class="code-block">
+                        <pre>
+# Hyperparamètres PPO conceptuels (par ex., utilisant Stable Baselines3)
+ppo_params = {
+    'learning_rate': 3e-4,
+    'gamma': 0.99,
+    'gae_lambda': 0.95,
+    'clip_range': 0.2,
+    'vf_coef': 0.5,
+    'ent_coef': 0.01,
+    'n_steps': 2048, # Nombre de pas par environnement par mise à jour
+    'n_epochs': 10,
+    'batch_size': 64,
+    # policy_kwargs pour l'architecture des réseaux acteur/critique
+}
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Performance d'entraînement relativement stable et robuste.</li>
+                        <li>Bonne efficacité d'échantillonnage pour une méthode en politique.</li>
+                        <li>Plus facile à implémenter et à optimiser par rapport à certains autres algorithmes RL avancés.</li>
+                        <li>Fonctionne bien avec les espaces d'actions discrets et continus (important pour le trading avec des tailles de position variables).</li>
+                        <li>Atteint souvent des résultats de pointe sur de nombreux benchmarks.</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Étant en politique, il peut être moins efficace en termes d'échantillons que les méthodes hors politique comme DQN ou SAC, car il rejette l'ancienne expérience après chaque mise à jour.</li>
+                        <li>Les performances peuvent toujours être sensibles aux choix d'hyperparamètres.</li>
+                        <li>Nécessite une conception minutieuse des espaces d'état, d'action et de récompense pour le trading.</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">PPO est un choix populaire pour développer des agents de trading basés sur RL en raison de sa stabilité et de sa capacité à gérer des espaces d'actions continus (par exemple, pourcentage du capital à allouer). Pour le XAU/USD, la recherche de 2023-2025 est susceptible d'explorer PPO avec des fonctions de récompense sophistiquées (par exemple, ratio de Sharpe, ratio de Sortino, ratio de Sharpe différentiel) et des représentations d'état qui incluent des données de microstructure de marché ou des données alternatives. Ses performances sur les marchés XAU/USD simulés peuvent être prometteuses, mais comme toutes les méthodes RL, une validation robuste hors échantillon et la prise en compte de la non-stationnarité du marché sont essentielles pour une application pratique.</p>
+                    <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct.)</em></p>
+                </div>
+            </section>
+
+            <section id="sac" class="content-section page-break">
+                <div class="content-card">
+                    <h3 class="subsection-title">4.3. Soft Actor-Critic (SAC)</h3>
+                    <h4 class="block-title">Architecture :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">SAC est un algorithme acteur-critique hors politique (off-policy) conçu pour les espaces d'actions continus, basé sur le cadre d'apprentissage par renforcement à entropie maximale. Il vise à apprendre une politique qui maximise non seulement le retour attendu mais aussi l'entropie (caractère aléatoire) de la politique, encourageant l'exploration et la robustesse.</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Réseau Acteur :</strong> Produit les paramètres (par exemple, moyenne et écart-type) d'une distribution gaussienne écrasée (squashed Gaussian) à partir de laquelle les actions sont échantillonnées.</li>
+                        <li><strong>Réseaux Critiques (généralement deux réseaux Q) :</strong> Apprend les fonctions action-valeur Q1(s,a) et Q2(s,a). L'utilisation de deux (astuce Double Q-learning) aide à atténuer le biais de surestimation.</li>
+                        <li><strong>Réseau de Valeur (optionnel, souvent une cible de Q) :</strong> Parfois, un réseau de valeur V(s) séparé est utilisé, ou sa cible est dérivée des réseaux Q et de la politique.</li>
+                        <li><strong>Maximisation de l'Entropie :</strong> La fonction objectif inclut un terme d'entropie pour la politique, pondéré par un paramètre de température `alpha`. Cet `alpha` peut être fixe ou appris automatiquement.</li>
+                        <li><strong>Mises à Jour Douces (Soft Updates) :</strong> Les réseaux cibles pour Q et V (si utilisés) sont mis à jour lentement via la moyenne de Polyak.</li>
+                        <li>Rejeu d'Expérience : Utilise un tampon de rejeu comme DQN.</li>
+                    </ul>
+
+                    <h4 class="block-title">Coût d'Entraînement & Vitesse d'Inférence (RTX 3060) :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Coût d'Entraînement :</strong> Élevé, similaire à PPO et DQN. Étant hors politique, il peut être plus efficace en termes d'échantillons que PPO. Une RTX 3060 est adaptée à l'entraînement SAC pour le trading XAU/USD, avec des temps d'entraînement typiquement de l'ordre de quelques heures à plusieurs jours/semaines.</li>
+                        <li><strong>Vitesse d'Inférence :</strong> Rapide. Implique une passe avant à travers le réseau acteur.</li>
+                    </ul>
+
+                    <h4 class="block-title">Hyperparamètres Clés :</h4>
+                    <ul class="styled-list mb-2">
+                        <li><code>learning_rate</code> : Pour les optimiseurs de l'acteur, du critique et d'alpha.</li>
+                        <li><code>gamma</code> : Facteur d'actualisation.</li>
+                        <li><code>tau</code> (ou <code>polyak</code>) : Coefficient pour les mises à jour cibles douces.</li>
+                        <li><code>buffer_size</code> : Taille du tampon de rejeu.</li>
+                        <li><code>batch_size</code> : Taille des mini-lots.</li>
+                        <li><code>alpha</code> (ou <code>ent_coef</code>) : Coefficient de régularisation de l'entropie (peut être 'auto' pour l'apprendre).</li>
+                        <li><code>target_entropy</code> : Valeur d'entropie cible si alpha est appris.</li>
+                        <li>Architectures des réseaux Acteur/Critique.</li>
+                    </ul>
+                     <div class="code-block">
+                        <pre>
+# Hyperparamètres SAC conceptuels (par ex., utilisant Stable Baselines3)
+sac_params = {
+    'learning_rate': 3e-4, # Peut être un calendrier (schedule)
+    'buffer_size': 1000000,
+    'batch_size': 256,
+    'gamma': 0.99,
+    'tau': 0.005,
+    'ent_coef': 'auto', # Ajuster alpha automatiquement
+    'target_update_interval': 1, # Fréquence de mise à jour des réseaux cibles (en termes de pas de gradient)
+    # policy_kwargs pour l'architecture des réseaux acteur/critique
+}
+                        </pre>
+                    </div>
+
+                    <h4 class="block-title">Avantages :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Performance de pointe dans de nombreuses tâches de contrôle continu.</li>
+                        <li>Très efficace en termes d'échantillons grâce à l'apprentissage hors politique.</li>
+                        <li>Dynamique d'entraînement stable.</li>
+                        <li>Encourage l'exploration par la maximisation de l'entropie, conduisant à des politiques plus robustes.</li>
+                        <li>Relativement insensible aux hyperparamètres par rapport à certains autres algorithmes RL.</li>
+                    </ul>
+
+                    <h4 class="block-title">Inconvénients :</h4>
+                    <ul class="styled-list mb-2">
+                        <li>Plus complexe à implémenter que des algorithmes plus simples comme DQN ou PPO en raison de multiples réseaux et du terme d'entropie.</li>
+                        <li>Principalement conçu pour les espaces d'actions continus ; des adaptations sont nécessaires pour les espaces discrets. Pour le trading, c'est souvent un avantage si la taille de la position est continue.</li>
+                        <li>Nécessite toujours une conception minutieuse de l'environnement (état, action, récompense).</li>
+                    </ul>
+
+                    <h4 class="block-title">Résultats de Trading Publiés (Focus XAU/USD, 2023-2025) :</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">Les forces de SAC en matière d'efficacité d'échantillonnage et de contrôle continu en font un candidat très prometteur pour le trading XAU/USD, en particulier pour les stratégies impliquant un dimensionnement dynamique des positions ou une allocation de portefeuille. La recherche de 2023-2025 est de plus en plus susceptible de présenter SAC dans des applications financières. Pour le XAU/USD, les agents SAC pourraient apprendre des stratégies nuancées qui équilibrent efficacement le risque et le rendement, surpassant potentiellement d'autres méthodes RL dans des conditions de marché complexes et non stationnaires. L'ajustement automatique du coefficient d'entropie `alpha` est également un avantage pratique.</p>
+                    <p class="text-slate-600 text-sm leading-relaxed"><em>(Note : Les références spécifiques de benchmarks nécessiteraient une recherche bibliographique en direct.)</em></p>
+                </div>
+            </section>
+
+            <section id="comparative-summary" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">5. Tableau Récapitulatif Comparatif</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Le tableau suivant fournit une comparaison de haut niveau des modèles discutés. "Coût d'Entraînement" et "Vitesse d'Inférence" sont des estimations relatives pour une RTX 3060 avec des données XAU/USD typiques.</p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Modèle</th>
+                                    <th>Type</th>
+                                    <th>Force Principale</th>
+                                    <th>Coût Entr. Est. (RTX 3060)</th>
+                                    <th>Vit. Inf. Est. (RTX 3060)</th>
+                                    <th>Gère Caract. Catég. Nativement ?</th>
+                                    <th>Gère Séries Temp. Nativement ?</th>
+                                    <th>Défi Clé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CatBoost</td>
+                                    <td>Supervisé (GBDT)</td>
+                                    <td>Caractéristiques catégorielles, Robustesse</td>
+                                    <td>Modéré</td>
+                                    <td>Très Rapide</td>
+                                    <td>Oui (Excellent)</td>
+                                    <td>Non (Nécessite ingénierie des caract.)</td>
+                                    <td>Entraînement légèrement plus lent que LightGBM</td>
+                                </tr>
+                                <tr>
+                                    <td>XGBoost</td>
+                                    <td>Supervisé (GBDT)</td>
+                                    <td>Précision, Régularisation</td>
+                                    <td>Modéré</td>
+                                    <td>Très Rapide</td>
+                                    <td>Non (Nécessite prétraitement)</td>
+                                    <td>Non (Nécessite ingénierie des caract.)</td>
+                                    <td>Sensibilité aux hyperparamètres</td>
+                                </tr>
+                                <tr>
+                                    <td>LightGBM</td>
+                                    <td>Supervisé (GBDT)</td>
+                                    <td>Vitesse, Efficacité</td>
+                                    <td>Faible-Modéré</td>
+                                    <td>Très Rapide</td>
+                                    <td>Support de base (mieux avec encodage)</td>
+                                    <td>Non (Nécessite ingénierie des caract.)</td>
+                                    <td>Surajustement sur petites données si non optimisé</td>
+                                </tr>
+                                <tr>
+                                    <td>TabPFN</td>
+                                    <td>Supervisé (Transformer)</td>
+                                    <td>Petites données, Pas d'optimisation</td>
+                                    <td>N/A (Pré-entraîné)</td>
+                                    <td>Rapide (pour petites données)</td>
+                                    <td>Non (Nécessite pré-encodage)</td>
+                                    <td>Non (Nécessite ingénierie des caract., petites fenêtres)</td>
+                                    <td>Limites strictes de taille de données</td>
+                                </tr>
+                                <tr>
+                                    <td>TFT</td>
+                                    <td>Supervisé (Transformer/LSTM)</td>
+                                    <td>Prévision multi-horizon, Interprétabilité</td>
+                                    <td>Élevé</td>
+                                    <td>Modérée</td>
+                                    <td>Oui (via plongements)</td>
+                                    <td>Oui (Excellent)</td>
+                                    <td>Complexité, Coût d'entraînement</td>
+                                </tr>
+                                <tr>
+                                    <td>LSTM</td>
+                                    <td>Supervisé (RNN)</td>
+                                    <td>Dépendances à long terme</td>
+                                    <td>Modéré-Élevé</td>
+                                    <td>Modérée</td>
+                                    <td>Non (Nécessite plongements/encodage)</td>
+                                    <td>Oui (Excellent)</td>
+                                    <td>Temps d'entraînement, Disparition/explosion gradients (atténué)</td>
+                                </tr>
+                                <tr>
+                                    <td>TCN</td>
+                                    <td>Supervisé (CNN)</td>
+                                    <td>Longues dépendances, Parallélisme</td>
+                                    <td>Modéré</td>
+                                    <td>Rapide</td>
+                                    <td>Non (Nécessite plongements/encodage)</td>
+                                    <td>Oui (Excellent)</td>
+                                    <td>Mémoire pour très longues séquences</td>
+                                </tr>
+                                <tr>
+                                    <td>DQN</td>
+                                    <td>Apprentissage par Renforcement</td>
+                                    <td>Apprentissage basé sur la valeur pour actions discrètes</td>
+                                    <td>Élevé</td>
+                                    <td>Rapide</td>
+                                    <td>Via couche d'entrée NN</td>
+                                    <td>Via représentation d'état</td>
+                                    <td>Stabilité, Actions discrètes, Inefficacité d'échantillonnage</td>
+                                </tr>
+                                <tr>
+                                    <td>PPO</td>
+                                    <td>Apprentissage par Renforcement</td>
+                                    <td>Stabilité, Actions continues/discrètes</td>
+                                    <td>Élevé</td>
+                                    <td>Rapide</td>
+                                    <td>Via couche d'entrée NN</td>
+                                    <td>Via représentation d'état</td>
+                                    <td>Efficacité d'échantillonnage en politique</td>
+                                </tr>
+                                <tr>
+                                    <td>SAC</td>
+                                    <td>Apprentissage par Renforcement</td>
+                                    <td>Efficacité d'échantillonnage, Actions continues, Exploration</td>
+                                    <td>Élevé</td>
+                                    <td>Rapide</td>
+                                    <td>Via couche d'entrée NN</td>
+                                    <td>Via représentation d'état</td>
+                                    <td>Complexité d'implémentation</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-4 text-sm text-slate-600 leading-relaxed">Note : "Gère Séries Temp. Nativement ?" fait référence à si l'architecture de base est conçue pour les données séquentielles. Les GBDT peuvent être très efficaces pour les séries temporelles avec une ingénierie des caractéristiques appropriée (décalages, statistiques mobiles, etc.).</p>
+                </div>
+            </section>
+
+            <section id="decision-tree" class="content-section page-break">
+                 <div class="content-card">
+                    <h2 class="section-title">6. Arbre de Décision pour la Sélection de Modèles (Trading XAU/USD)</h2>
+                    <p class="mb-6 text-slate-700 leading-relaxed">Choisir le bon modèle dépend de divers facteurs, notamment les caractéristiques des données, les ressources de calcul, l'interprétabilité souhaitée et le problème de trading spécifique (par exemple, horizon de prédiction, espace d'action). Cet arbre de décision offre un guide simplifié.</p>
+                    
+                    <div class="decision-tree-node">
+                        <strong>Début : Définir le Problème de Trading & les Données</strong>
+                    </div>
+                    <div class="decision-tree-connector"><div class="decision-tree-line"></div></div>
+                    
+                    <div class="decision-tree-node">
+                        L'ensemble de données est-il très petit (<1k échantillons, <100 caractéristiques) ET une base de référence rapide est-elle nécessaire sans optimisation ?
+                    </div>
+                    <div class="decision-tree-branch">
+                        <div>
+                            <div class="decision-tree-connector">
+                                <span class="decision-tree-branch-label">Oui</span>
+                                <div class="decision-tree-line"></div>
+                            </div>
+                            <div class="decision-tree-node">Considérer <strong>TabPFN</strong> (si classification)</div>
+                        </div>
+                        <div>
+                            <div class="decision-tree-connector">
+                                <span class="decision-tree-branch-label">Non</span>
+                                <div class="decision-tree-line"></div>
+                            </div>
+                            <div class="decision-tree-node">Procéder</div>
+                        </div>
+                    </div>
+                    <div class="decision-tree-connector"><div class="decision-tree-line"></div></div>
+
+                    <div class="decision-tree-node">
+                        Objectif Principal : Prédiction directe de prix/signal (Supervisé) OU Apprentissage d'actions optimales via interaction (RL) ?
+                    </div>
+                     <div class="decision-tree-branch">
+                        <div>
+                            <div class="decision-tree-connector"><div class="decision-tree-line"></div></div>
+                            <div class="decision-tree-node bg-sky-100">
+                                <strong>Voie Apprentissage Supervisé</strong>
+                            </div>
+                            <div class="decision-tree-connector"><div class="decision-tree-line"></div></div>
+                            <div class="decision-tree-node">
+                                Besoin de prévisions quantiles multi-horizon & haute interprétabilité avec des données temporelles complexes ?
+                            </div>
+                            <div class="decision-tree-branch">
+                                <div>
+                                    <div class="decision-tree-connector"><span class="decision-tree-branch-label">Oui</span><div class="decision-tree-line"></div></div>
+                                    <div class="decision-tree-node">Considérer <strong>TFT</strong> (coût élevé)</div>
+                                </div>
+                                <div>
+                                    <div class="decision-tree-connector"><span class="decision-tree-branch-label">Non</span><div class="decision-tree-line"></div></div>
+                                    <div class="decision-tree-node">Les dépendances temporelles à long terme sont-elles critiques et les données séquentielles ?</div>
+                                     <div class="decision-tree-branch">
+                                        <div>
+                                            <div class="decision-tree-connector"><span class="decision-tree-branch-label">Oui</span><div class="decision-tree-line"></div></div>
+                                            <div class="decision-tree-node">Considérer <strong>LSTM</strong> ou <strong>TCN</strong></div>
+                                        </div>
+                                        <div>
+                                            <div class="decision-tree-connector"><span class="decision-tree-branch-label">Non</span><div class="decision-tree-line"></div></div>
+                                            <div class="decision-tree-node">(Ou ingénierie des caract. pour le temps) : Approche données tabulaires. Nombreuses caractéristiques catégorielles ?</div>
+                                            <div class="decision-tree-branch">
+                                                <div>
+                                                    <div class="decision-tree-connector"><span class="decision-tree-branch-label">Oui</span><div class="decision-tree-line"></div></div>
+                                                    <div class="decision-tree-node">Considérer <strong>CatBoost</strong></div>
+                                                </div>
+                                                <div>
+                                                    <div class="decision-tree-connector"><span class="decision-tree-branch-label">Non</span><div class="decision-tree-line"></div></div>
+                                                    <div class="decision-tree-node">Prioriser vitesse/efficacité ?</div>
+                                                    <div class="decision-tree-branch">
+                                                        <div>
+                                                            <div class="decision-tree-connector"><span class="decision-tree-branch-label">Oui</span><div class="decision-tree-line"></div></div>
+                                                            <div class="decision-tree-node">Considérer <strong>LightGBM</strong></div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="decision-tree-connector"><span class="decision-tree-branch-label">Non</span><div class="decision-tree-line"></div></div>
+                                                            <div class="decision-tree-node">(Prioriser précision brute/robustesse) : Considérer <strong>XGBoost</strong></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="decision-tree-connector"><div class="decision-tree-line"></div></div>
+                            <div class="decision-tree-node bg-emerald-100">
+                                <strong>Voie Apprentissage par Renforcement</strong>
+                            </div>
+                            <div class="decision-tree-connector"><div class="decision-tree-line"></div></div>
+                             <div class="decision-tree-node">
+                                Espace d'actions continu (par ex., taille de position variable) & efficacité d'échantillonnage critique ?
+                            </div>
+                             <div class="decision-tree-branch">
+                                <div>
+                                    <div class="decision-tree-connector"><span class="decision-tree-branch-label">Oui</span><div class="decision-tree-line"></div></div>
+                                    <div class="decision-tree-node">Considérer <strong>SAC</strong></div>
+                                </div>
+                                <div>
+                                    <div class="decision-tree-connector"><span class="decision-tree-branch-label">Non</span><div class="decision-tree-line"></div></div>
+                                    <div class="decision-tree-node">Stabilité et bonne performance avec actions discrètes ou continues nécessaires ?</div>
+                                    <div class="decision-tree-branch">
+                                        <div>
+                                            <div class="decision-tree-connector"><span class="decision-tree-branch-label">Oui</span><div class="decision-tree-line"></div></div>
+                                            <div class="decision-tree-node">Considérer <strong>PPO</strong></div>
+                                        </div>
+                                        <div>
+                                            <div class="decision-tree-connector"><span class="decision-tree-branch-label">Non</span><div class="decision-tree-line"></div></div>
+                                            <div class="decision-tree-node">(Actions discrètes, basé sur la valeur plus simple) : Considérer <strong>DQN</strong> (et variantes comme Double DQN, Dueling DQN)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-8 text-sm text-slate-600 leading-relaxed">Cet arbre est un point de départ. Souvent, plusieurs modèles sont prototypés et évalués. Les approches hybrides combinant les forces de différents modèles sont également courantes.</p>
+                </div>
+            </section>
+
+            <section id="gpu-migration" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">7. Chemin de Migration CPU vers GPU</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed">La migration de l'entraînement et de l'inférence des modèles du CPU vers le GPU (comme une RTX 3060) peut accélérer considérablement le calcul, en particulier pour les modèles d'apprentissage profond et les grands ensembles de données. Voici un chemin général :</p>
+                    
+                    <h3 class="subsection-title mt-4">1. Configuration Matérielle et des Pilotes :</h3>
+                    <ul class="styled-list mb-2">
+                        <li>Assurez-vous qu'un GPU NVIDIA compatible est installé (par exemple, RTX 3060).</li>
+                        <li>Installez les derniers pilotes NVIDIA pour votre GPU et votre OS.</li>
+                        <li>Installez CUDA Toolkit : Nécessaire pour le calcul GPU avec la plupart des frameworks d'apprentissage profond. Assurez la compatibilité des versions avec les bibliothèques choisies.</li>
+                        <li>Installez cuDNN : Bibliothèque NVIDIA CUDA Deep Neural Network, qui accélère les primitives pour l'apprentissage profond. Assurez la compatibilité des versions.</li>
+                    </ul>
+
+                    <h3 class="subsection-title mt-6">2. Considérations Logicielles et Bibliothèques :</h3>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Environnement Python :</strong> Utilisez des environnements virtuels (par exemple, Conda, venv) pour gérer les dépendances.</li>
+                        <li><strong>Frameworks d'Apprentissage Profond (PyTorch, TensorFlow/Keras) :</strong>
+                            <ul class="styled-list">
+                                <li>Installez les versions compatibles GPU (par exemple, <code>pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cuXXX</code> pour PyTorch, où cuXXX correspond à votre version CUDA ; <code>pip install tensorflow-gpu</code> pour les anciennes versions de TensorFlow ou assurez-vous que TensorFlow 2.x détecte le GPU).</li>
+                                <li>Changements de code :
+                                    <ul class="styled-list">
+                                        <li>PyTorch : Déplacez les modèles et les tenseurs vers le GPU en utilisant <code>.to('cuda')</code> ou <code>.cuda()</code>. Par exemple, <code>model.to(device)</code>, <code>data.to(device)</code>.</li>
+                                        <li>TensorFlow/Keras : Utilise généralement le GPU automatiquement s'il est détecté et configuré correctement. Peut spécifier le placement de l'appareil si nécessaire.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Bibliothèques GBDT (XGBoost, LightGBM, CatBoost) :</strong>
+                            <ul class="styled-list">
+                                <li>Installez les versions avec support GPU. Souvent, c'est la version par défaut ou une compilation spécifique.</li>
+                                <li>Activez l'utilisation du GPU via les paramètres :
+                                    <ul class="styled-list">
+                                        <li>XGBoost : <code>tree_method='gpu_hist'</code>.</li>
+                                        <li>LightGBM : <code>device='gpu'</code>.</li>
+                                        <li>CatBoost : <code>task_type='GPU'</code>.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                         <li><strong>Bibliothèques RL (Stable Baselines3, RLlib, Tianshou) :</strong>
+                            <ul class="styled-list">
+                                <li>Ces bibliothèques s'appuient généralement sur PyTorch ou TensorFlow. Assurez-vous que le framework sous-jacent est compatible GPU.</li>
+                                <li>Souvent, la sélection de l'appareil (CPU/GPU) est un paramètre lors de l'initialisation de l'agent ou de la configuration de l'entraînement.</li>
+                            </ul>
+                        </li>
+                        <li><strong>TabPFN :</strong> L'implémentation officielle supporte l'inférence GPU si PyTorch est configuré pour GPU. Passez <code>device='cuda'</code>.</li>
+                    </ul>
+
+                    <h3 class="subsection-title mt-6">3. Gestion des Données et Traitement par Lots (Batching) :</h3>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Taille de Lot (Batch Size) :</strong> La mémoire GPU (par exemple, 12Go sur RTX 3060) est une contrainte. Ajustez les tailles de lot pour adapter les données et les paramètres du modèle à la VRAM. Des lots plus importants peuvent parfois accélérer l'entraînement mais consomment plus de mémoire.</li>
+                        <li><strong>Chargeurs de Données (Data Loaders) :</strong> Utilisez des chargeurs de données efficaces (par exemple, PyTorch <code>DataLoader</code>, TensorFlow <code>tf.data</code>) avec <code>pin_memory=True</code> (PyTorch) et plusieurs workers (<code>num_workers</code>) pour garantir que le GPU n'est pas en attente de données.</li>
+                    </ul>
+
+                    <h3 class="subsection-title mt-6">4. Ajustements du Code et Meilleures Pratiques :</h3>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Minimiser les Transferts de Données CPU-GPU :</strong> Ce sont des goulots d'étranglement. Effectuez autant de calculs que possible sur le GPU une fois les données transférées.</li>
+                        <li><strong>Entraînement en Précision Mixte (Mixed Precision) :</strong> Pour les modèles d'apprentissage profond, envisagez d'utiliser la Précision Mixte Automatique (AMP) (par exemple, PyTorch AMP, politique mixed_float16 de TensorFlow) pour accélérer l'entraînement et réduire l'utilisation de la mémoire sur les GPU compatibles (comme la RTX 3060 qui possède des Tensor Cores) avec une perte de précision minimale.</li>
+                        <li><strong>Profilage :</strong> Utilisez des outils de profilage (par exemple, NVIDIA Nsight Systems/Compute, PyTorch Profiler, TensorFlow Profiler) pour identifier les goulots d'étranglement des performances.</li>
+                        <li><strong>Gestion des Erreurs :</strong> Les erreurs de mémoire insuffisante du GPU sont courantes. Implémentez des vérifications ou des blocs try-except et ajustez les tailles de lot ou la complexité du modèle.</li>
+                    </ul>
+
+                    <h3 class="subsection-title mt-6">5. Vérification :</h3>
+                    <ul class="styled-list mb-2">
+                        <li>Confirmez l'utilisation du GPU pendant l'entraînement/l'inférence à l'aide d'outils comme <code>nvidia-smi</code> (ligne de commande) ou le gestionnaire des tâches/logiciel de surveillance.</li>
+                        <li>Comparez les performances (vitesse, résultats) par rapport aux versions CPU pour vous assurer que la migration est bénéfique et correcte.</li>
+                    </ul>
+                    <p class="mt-4 text-slate-700 leading-relaxed">Pour les modèles de trading XAU/USD, les avantages de l'accélération GPU sont plus prononcés pour les modèles d'apprentissage profond (TFT, LSTM, TCN, agents RL avec des réseaux profonds) et les GBDT sur de grands ensembles de données. L'inférence TabPFN bénéficie également du GPU.</p>
+                </div>
+            </section>
+
+            <section id="benchmarks" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">8. Benchmarks & Perspectives (2023-2025)</h2>
+                    <h3 class="subsection-title mt-4">Benchmarks Récents (Qualitatifs) :</h3>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Des benchmarks directs et complets comparant tous ces modèles spécifiquement pour le trading XAU/USD sur une RTX 3060 dans la période 2023-2025 sont rares dans la littérature publique consolidée. Cependant, des tendances peuvent être déduites :</p>
+                    <ul class="styled-list mb-2">
+                        <li><strong>GBDT (CatBoost, XGBoost, LightGBM) :</strong> Performeurs constamment solides sur les données financières tabulaires. LightGBM mène souvent en vitesse, CatBoost dans la gestion des caractéristiques catégorielles, et XGBoost en robustesse globale. Leur succès repose fortement sur l'ingénierie des caractéristiques. Les travaux récents se concentrent sur l'incorporation de caractéristiques plus complexes et la génération automatisée de caractéristiques.</li>
+                        <li><strong>TabPFN :</strong> Montre des résultats remarquables sur de petits ensembles de données tabulaires, surpassant souvent les GBDT optimisés sans nécessiter d'optimisation lui-même. Son applicabilité au XAU/USD dépend de la formulation du problème dans les limites de sa taille de données (par exemple, prédictions à très court terme sur des caractéristiques limitées).</li>
+                        <li><strong>Apprentissage Profond pour Séries Temporelles (TFT, LSTM, TCN) :</strong>
+                            <ul class="styled-list">
+                                <li><strong>TFT :</strong> Émerge comme un modèle de pointe pour la prévision multi-horizon, en particulier avec des covariables. Son adoption en finance est croissante.</li>
+                                <li><strong>LSTM :</strong> Une référence de longue date. Les architectures plus récentes montrent souvent des améliorations, mais les LSTM bien optimisés (surtout avec attention) restent compétitifs.</li>
+                                <li><strong>TCN :</strong> Gagne en popularité comme alternative plus rapide et parfois plus efficace aux LSTM.</li>
+                            </ul>
+                            La performance de ces modèles d'apprentissage profond pour le XAU/USD est très sensible à l'architecture, au prétraitement des données et à la capacité à capturer la non-stationnarité.
+                        </li>
+                        <li><strong>Apprentissage par Renforcement (DQN, PPO, SAC) :</strong>
+                            <ul class="styled-list">
+                                <li>Intérêt de recherche significatif pour l'application du RL au trading. SAC et PPO sont souvent privilégiés pour leur stabilité et leur gestion des actions continues.</li>
+                                <li>Des défis subsistent dans la conception des récompenses, le transfert de la simulation à la réalité et la gestion de la non-stationnarité du marché. La rentabilité dans des backtests robustes est réalisable, mais un succès constant en trading réel est plus difficile.</li>
+                                <li>Les benchmarks se concentrent souvent sur les récompenses cumulées, les ratios de Sharpe ou d'autres métriques ajustées au risque dans des environnements simulés.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                     <p class="mb-4 text-slate-700 leading-relaxed">Pour le XAU/USD, le "meilleur" modèle n'est pas fixe ; il dépend de la stratégie de trading spécifique, de l'horizon de prédiction, de la disponibilité des données, de l'ensemble des caractéristiques et de la tolérance au risque. Aucun modèle unique ne domine universellement toutes les tâches de prédiction financière.</p>
+
+                    <h3 class="subsection-title mt-6">Perspectives (2023-2025 et au-delà) :</h3>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Modèles Hybrides :</strong> Exploration continue de la combinaison des forces de différentes architectures (par exemple, GBDT avec des caractéristiques d'apprentissage profond, RL avec pré-entraînement supervisé ou tâches auxiliaires).</li>
+                        <li><strong>Variantes de Transformer :</strong> Au-delà de TFT, davantage de modèles basés sur Transformer adaptés aux séries temporelles financières sont attendus, axés sur l'efficacité et l'interprétabilité.</li>
+                        <li><strong>Réseaux de Neurones Graphiques (GNN) :</strong> Potentiel pour modéliser les relations inter-actifs ou les connexions d'actualités/médias sociaux influençant le XAU/USD.</li>
+                        <li><strong>Inférence Causale & ML :</strong> Accent accru sur la compréhension des relations causales plutôt que de simples corrélations pour construire des modèles de trading plus robustes. Méthodes de découverte causale combinées au ML.</li>
+                        <li><strong>Apprentissage Automatique Automatisé (AutoML) :</strong> Les outils d'automatisation de l'ingénierie des caractéristiques, de la sélection de modèles et de l'optimisation des hyperparamètres deviendront plus sophistiqués pour les applications financières. TabPFN est un pas dans cette direction pour la sélection/optimisation de modèles.</li>
+                        <li><strong>IA Explicable (XAI) :</strong> Demande croissante de compréhension des décisions des modèles en finance pour la gestion des risques et la conformité réglementaire. Des techniques comme SHAP, LIME et les mécanismes d'attention dans les TFT seront cruciales.</li>
+                        <li><strong>Avancées en RL :</strong> Améliorations supplémentaires de l'efficacité d'échantillonnage, RL hors ligne (apprentissage à partir d'ensembles de données fixes sans interaction) et RL multi-agents pour les marchés financiers. Meilleure gestion de la non-stationnarité.</li>
+                        <li><strong>Intégration de Données Alternatives :</strong> Méthodes plus sophistiquées pour incorporer des données non structurées (actualités, médias sociaux, imagerie satellite) et des données à haute fréquence dans les modèles de trading XAU/USD.</li>
+                    </ul>
+                    <p class="mt-4 text-slate-700 leading-relaxed">La période 2023-2025 verra probablement une innovation rapide continue, avec un accent sur la création de systèmes de trading IA plus robustes, adaptables et interprétables pour les actifs volatils comme le XAU/USD.</p>
+                </div>
+            </section>
+
+            <section id="conclusion" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">9. Conclusion</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Cette étude comparative a exploré une gamme de modèles d'apprentissage supervisé et par renforcement applicables au trading du XAU/USD. Chaque modèle présente un ensemble unique de forces, de faiblesses et de caractéristiques computationnelles. Les Arbres de Décision à Gradient Boosté (CatBoost, XGBoost, LightGBM) restent des outils puissants pour les données tabulaires, excellant avec une ingénierie des caractéristiques soignée. TabPFN offre une solution convaincante pour les scénarios de petits ensembles de données nécessitant un déploiement rapide sans optimisation.</p>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Les modèles d'apprentissage profond conçus pour les données séquentielles, tels que les LSTM, les TCN, et en particulier le Temporal Fusion Transformer (TFT), offrent des capacités sophistiquées pour capturer des schémas temporels complexes et incorporer divers types de données, bien qu'à un coût de calcul plus élevé. Les agents d'apprentissage par renforcement (DQN, PPO, SAC) offrent un paradigme pour apprendre des politiques de trading directes par interaction avec le marché, PPO et SAC montrant une promesse particulière pour leur stabilité et leur gestion des espaces d'actions continus pertinents pour la prise de décision financière.</p>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Le choix du modèle pour le trading XAU/USD n'est pas universel. Il nécessite une considération attentive des objectifs de trading spécifiques, de la disponibilité des données, du budget de calcul (une RTX 3060 offre un bon équilibre pour beaucoup de ces modèles), et des compromis entre la complexité du modèle, la performance et l'interprétabilité. L'arbre de décision fourni et le chemin de migration CPU vers GPU visent à offrir des conseils pratiques aux praticiens.</p>
+                    <p class="text-slate-700 leading-relaxed">Le domaine évolue rapidement, la recherche en cours étant susceptible de produire des outils d'IA encore plus puissants et spécialisés pour naviguer dans les complexités du marché XAU/USD dans les années à venir. Un engagement envers l'apprentissage continu, une validation robuste et la gestion des risques reste primordial pour une application réussie de ces modèles d'IA en trading réel.</p>
+                </div>
+            </section>
+            
+            <section id="references" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">10. Références</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Cette étude est basée sur une connaissance générale des modèles et des pratiques courantes en IA pour la finance. Pour des benchmarks spécifiques, à jour (2023-2025), évalués par des pairs et des études détaillées, les lecteurs sont encouragés à consulter les sources et mots-clés suivants :</p>
+                    <ul class="styled-list space-y-2">
+                        <li><strong>Bases de Données Académiques :</strong>
+                            <ul class="styled-list">
+                                <li>ArXiv (cs.LG, cs.AI, q-fin.CP, q-fin.ST)</li>
+                                <li>Google Scholar</li>
+                                <li>IEEE Xplore</li>
+                                <li>ACM Digital Library</li>
+                                <li>SSRN (Social Science Research Network)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Revues & Conférences :</strong>
+                            <ul class="styled-list">
+                                <li>Journal of Financial Data Science</li>
+                                <li>Journal of Machine Learning Research (JMLR)</li>
+                                <li>International Conference on Machine Learning (ICML)</li>
+                                <li>Conference on Neural Information Processing Systems (NeurIPS)</li>
+                                <li>AAAI Conference on Artificial Intelligence</li>
+                                <li>Expert Systems with Applications</li>
+                                <li>Knowledge-Based Systems</li>
+                            </ul>
+                        </li>
+                        <li><strong>Mots-clés pour la Recherche :</strong>
+                            <ul class="styled-list">
+                                <li>"[Nom du Modèle] XAU/USD trading" (par ex., "LSTM XAU/USD trading")</li>
+                                <li>"[Nom du Modèle] gold price prediction"</li>
+                                <li>"Algorithmic trading XAU/USD [année]"</li>
+                                <li>"Machine learning for commodity forecasting"</li>
+                                <li>"Deep learning for financial time series XAU/USD"</li>
+                                <li>"Reinforcement learning for portfolio optimization XAU/USD"</li>
+                            </ul>
+                        </li>
+                        <li><strong>Documentation Spécifique des Modèles :</strong>
+                            <ul class="styled-list">
+                                <li>CatBoost : <a href="https://catboost.ai/" target="_blank" class="text-sky-600 hover:text-sky-700 hover:underline">catboost.ai</a></li>
+                                <li>XGBoost : <a href="https://xgboost.readthedocs.io/" target="_blank" class="text-sky-600 hover:text-sky-700 hover:underline">xgboost.readthedocs.io</a></li>
+                                <li>LightGBM : <a href="https://lightgbm.readthedocs.io/" target="_blank" class="text-sky-600 hover:text-sky-700 hover:underline">lightgbm.readthedocs.io</a></li>
+                                <li>TabPFN : Rechercher "TabPFN GitHub" ou l'article original (Hollmann et al., 2023).</li>
+                                <li>Temporal Fusion Transformer : Article original de Lim et al. (Google Research, 2019/2021), bibliothèque PyTorch Forecasting.</li>
+                                <li>LSTM/TCN : Documentation Keras/TensorFlow, PyTorch.</li>
+                                <li>DQN, PPO, SAC : Documentation Stable Baselines3, RLlib, Tianshou.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="mt-4 text-sm text-slate-600 leading-relaxed"><em>Note : En raison de la nature dynamique de la recherche, les citations spécifiques d'articles pour les benchmarks 2023-2025 sont mieux obtenues par une recherche en direct au moment de la lecture. Cette liste fournit des points de départ pour une telle recherche.</em></p>
+                </div>
+            </section>
+
+            <section id="appendix-rtx3060" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">11. Annexe : Considérations Relatives à la NVIDIA RTX 3060 pour les Modèles de Trading IA</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed">La NVIDIA GeForce RTX 3060 (la variante avec 12Go de VRAM est généralement préférée pour l'IA par rapport à la variante 8Go) est un GPU populaire de milieu de gamme supérieur de l'architecture Ampere. Elle offre un bon équilibre entre performance, capacité VRAM et coût pour les praticiens et chercheurs en IA.</p>
+
+                    <h3 class="subsection-title mt-4">Spécifications Clés (Variante 12Go) :</h3>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Cœurs CUDA :</strong> 3584</li>
+                        <li><strong>Fréquence Boost :</strong> ~1.78 GHz (varie selon le modèle)</li>
+                        <li><strong>VRAM :</strong> 12 Go GDDR6</li>
+                        <li><strong>Bande Passante Mémoire :</strong> 360 Go/s</li>
+                        <li><strong>Tensor Cores :</strong> 3ème Génération (important pour l'accélération de l'entraînement en précision mixte)</li>
+                        <li><strong>RT Cores :</strong> 2ème Génération (moins pertinent pour la plupart des entraînements de modèles de trading IA)</li>
+                        <li><strong>Consommation Énergétique (TDP) :</strong> ~170W</li>
+                    </ul>
+
+                    <h3 class="subsection-title mt-6">Implications pour l'Entraînement des Modèles de Trading IA :</h3>
+                    <ul class="styled-list mb-2">
+                        <li><strong>GBDT (CatBoost, XGBoost, LightGBM) :</strong>
+                            <ul class="styled-list">
+                                <li>La RTX 3060 peut accélérer considérablement l'entraînement de ces modèles lorsque leurs algorithmes GPU sont utilisés (par exemple, <code>task_type='GPU'</code>, <code>tree_method='gpu_hist'</code>).</li>
+                                <li>12Go de VRAM sont généralement suffisants pour des ensembles de données modérément volumineux (millions de lignes, centaines de caractéristiques) utilisés dans l'analyse XAU/USD. L'utilisation de la mémoire dépend de la taille des données, du nombre de bacs et de la complexité des arbres.</li>
+                            </ul>
+                        </li>
+                        <li><strong>TabPFN :</strong>
+                            <ul class="styled-list">
+                                <li>L'inférence avec TabPFN est rapide sur une RTX 3060. Le modèle lui-même est pré-entraîné. Les 12Go de VRAM sont amples pour son cas d'utilisation typique avec de petits ensembles de données d'entrée.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Modèles de Séries Temporelles d'Apprentissage Profond (TFT, LSTM, TCN) :</strong>
+                            <ul class="styled-list">
+                                <li>La RTX 3060 est capable d'entraîner ces modèles. 12Go de VRAM permettent des tailles de lot et des longueurs de séquence raisonnables.</li>
+                                <li>Pour les modèles très complexes (comme les grands TFT ou les LSTM/TCN très profonds) ou les séquences très longues, la VRAM peut devenir un goulot d'étranglement, nécessitant des tailles de lot plus petites ou une accumulation de gradient.</li>
+                                <li>Les Tensor Cores permettent des accélérations significatives avec l'entraînement en Précision Mixte Automatique (AMP), réduisant le temps d'entraînement et l'empreinte mémoire.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Modèles d'Apprentissage par Renforcement (DQN, PPO, SAC) :</strong>
+                            <ul class="styled-list">
+                                <li>Si les réseaux acteur/critique sont des réseaux de neurones profonds, la RTX 3060 accélère leur entraînement.</li>
+                                <li>Le RL implique souvent l'exécution de plusieurs environnements en parallèle pour la collecte de données ; bien que le GPU aide aux mises à jour du réseau, le temps d'entraînement global est également fortement influencé par la vitesse de simulation de l'environnement (qui peut être limitée par le CPU) et l'efficacité d'échantillonnage de l'algorithme.</li>
+                                <li>12Go de VRAM sont généralement adéquats pour les tailles de réseau couramment utilisées dans les tâches financières RL.</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3 class="subsection-title mt-6">Conseils Pratiques pour les Utilisateurs de RTX 3060 :</h3>
+                    <ul class="styled-list mb-2">
+                        <li><strong>Surveiller l'Utilisation de la VRAM :</strong> Utilisez <code>nvidia-smi</code> pour suivre la consommation de mémoire et vous assurer de ne pas dépasser la capacité.</li>
+                        <li><strong>Commencer avec des Tailles de Lot Plus Petites :</strong> Augmentez progressivement la taille du lot pour trouver l'équilibre optimal entre vitesse et limites de mémoire.</li>
+                        <li><strong>Utiliser la Précision Mixte :</strong> Activez AMP pour les modèles d'apprentissage profond afin de gagner en vitesse et d'économiser de la mémoire.</li>
+                        <li><strong>Maintenir les Pilotes à Jour :</strong> Assurez-vous d'avoir les derniers pilotes NVIDIA et les versions compatibles de CUDA/cuDNN pour des performances et une stabilité optimales.</li>
+                        <li><strong>Refroidissement :</strong> Assurez un refroidissement adéquat du GPU pendant les longues sessions d'entraînement pour éviter la limitation thermique.</li>
+                        <li><strong>Prétraitement des Données :</strong> Bien que le GPU accélère l'entraînement, un chargement et un prétraitement efficaces des données (souvent sur CPU) sont cruciaux pour éviter les goulots d'étranglement.</li>
+                    </ul>
+                    <p class="mt-4 text-slate-700 leading-relaxed">Globalement, la RTX 3060 (12Go) fournit une plateforme solide pour développer et expérimenter une large gamme de modèles d'IA pour le trading XAU/USD. Bien que des GPU plus puissants existent, la RTX 3060 offre un bon point d'entrée pour un travail sérieux en IA sans un coût prohibitif.</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const reportNavigation = document.getElementById('report-navigation');
+            const mainContent = document.querySelector('main');
+
+            function showSection(targetId, smoothScroll = false) {
+                let foundTarget = false;
+                contentSections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                        foundTarget = true;
+                        // Optionnel: Défilement vers la section (peut être désactivé si géré par le navigateur via #hash)
+                        // if (smoothScroll) {
+                        //     section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // } else {
+                        //    mainContent.scrollTop = section.offsetTop - mainContent.offsetTop; // Ajustement pour l'en-tête fixe si nécessaire
+                        // }
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                if (!foundTarget && contentSections.length > 0) {
+                    contentSections[0].classList.add('active'); // Afficher la première section par défaut si la cible n'est pas trouvée
+                }
+            }
+            
+            function updateActiveLink(targetId) {
+                 navLinks.forEach(navLink => {
+                    if (navLink.dataset.target === targetId) {
+                        navLink.classList.add('active');
+                    } else {
+                        navLink.classList.remove('active');
+                    }
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const targetId = this.dataset.target;
+                    
+                    history.pushState(null, null, '#' + targetId); // Met à jour l'URL pour la navigation par ancre
+                    showSection(targetId, false); // Le défilement est géré par le navigateur avec l'ancre
+                    updateActiveLink(targetId);
+                    
+                    // S'assurer que le lien cliqué est visible dans la sidebar
+                    const linkRect = this.getBoundingClientRect();
+                    const navRect = reportNavigation.getBoundingClientRect();
+                    if (linkRect.bottom > navRect.bottom) {
+                        reportNavigation.scrollTop += (linkRect.bottom - navRect.bottom) + 20;
+                    } else if (linkRect.top < navRect.top) {
+                         reportNavigation.scrollTop -= (navRect.top - linkRect.top) + 20;
+                    }
+                });
+            });
+            
+            // Gérer le chargement initial basé sur l'ancre dans l'URL
+            function loadSectionFromHash() {
+                let initialTargetId = 'introduction';
+                if (window.location.hash) {
+                    const hashTarget = window.location.hash.substring(1);
+                    const targetElement = document.getElementById(hashTarget);
+                    if (targetElement && targetElement.classList.contains('content-section')) {
+                        initialTargetId = hashTarget;
+                    }
+                }
+                showSection(initialTargetId);
+                updateActiveLink(initialTargetId);
+            }
+
+            loadSectionFromHash(); // Charger la section au chargement de la page
+
+            // Écouter les changements de hash (boutons précédent/suivant du navigateur)
+            window.addEventListener('hashchange', loadSectionFromHash);
+
+        });
+    </script>
+</body>
+</html>
