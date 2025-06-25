@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sauvegarde Veeam – relance en échec</title>
+  <meta name="description" content="Diagnostic et relance d'une sauvegarde Veeam en erreur pour le client Bigmatinfo.">
+  <meta name="author" content="Romain Begot">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="page-loader">
+    <div class="loader-logo">
+      <img src="img/22 mai 2025, 13_51_32.png" alt="Logo Romain Begot - Portfolio Professionnel" class="loader-img">
+      <div class="loader-cyber"></div>
+    </div>
+    <div class="loader-text">Chargement du Portfolio...</div>
+  </div>
+
+  <header>
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="index.html" class="navbar-logo">
+          <img src="img/22 mai 2025, 13_51_32.png" alt="Logo Romain Begot - Retour à l'accueil">
+        </a>
+        <div class="site-title">Portfolio Romain Begot</div>
+      </div>
+
+      <button class="hamburger-menu" aria-label="Ouvrir le menu de navigation">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <nav class="main-nav">
+        <ul class="menu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="mon-cv.html">Mon CV</a></li>
+          <li><a href="ateliers.html">Mes AP</a></li>
+          <li><a href="veille-tech.html">Veille Tech</a></li>
+          <li class="submenu">
+            <a href="stages.html" aria-haspopup="true" aria-expanded="false">Missions de Stage</a>
+            <ul class="submenu-list">
+              <li><a href="stages.html#mission-https-apache">Passage HTTPS Apache</a></li>
+              <li><a href="missions-veeam-backup.html" class="active">Sauvegarde Veeam – relance en échec</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Vérification d’une sauvegarde en erreur</h1>
+      <p class="hero-subtitle">Intervention pour le client Bigmatinfo sur la machine virtuelle <code>veeam04</code>.</p>
+    </section>
+
+    <section class="mission-contexte">
+      <h2>Contexte</h2>
+      <p>Une tâche de sauvegarde affichait l’état <strong>Failed</strong> dans la console Veeam. Après vérification, il s’agissait de la VM <code>veeam04</code> du client Bigmatinfo. L’objectif était de diagnostiquer la cause de l’échec puis de relancer la sauvegarde.</p>
+    </section>
+
+    <section class="mission-etapes">
+      <h2>Étapes réalisées</h2>
+      <ol>
+        <li>
+          <strong>Accès à CyberElements</strong>
+          <p>Connexion au portail pour récupérer les identifiants sécurisés.</p>
+          <img src="img/backup-error/step-1.png" alt="Accès CyberElements">
+        </li>
+        <li>
+          <strong>Ouverture de vCenter</strong>
+          <p>Vérification de l’état de la machine virtuelle concernée.</p>
+          <img src="img/backup-error/step-2.png" alt="Ouverture de vCenter">
+        </li>
+        <li>
+          <strong>Connexion à Veeam Backup &amp; Replication</strong>
+          <p>Analyse du job en échec et consultation des logs.</p>
+          <img src="img/backup-error/step-3.png" alt="Console Veeam">
+        </li>
+        <li>
+          <strong>Diagnostic de la licence</strong>
+          <p>Contrôle de la validité de la licence et des ressources disponibles.</p>
+          <img src="img/backup-error/step-4.png" alt="Diagnostic de la licence Veeam">
+        </li>
+        <li>
+          <strong>Purge des instances en échec</strong>
+          <p>Nettoyage des tâches bloquées afin de libérer les ressources.</p>
+          <img src="img/backup-error/step-5.png" alt="Purge des instances">
+        </li>
+        <li>
+          <strong>Relance de la sauvegarde</strong>
+          <p>Démarrage manuel du job de sauvegarde pour vérifier son bon déroulement.</p>
+          <img src="img/backup-error/step-6.png" alt="Relance du job Veeam">
+        </li>
+      </ol>
+    </section>
+
+    <section class="mission-resultats">
+      <h2>Résultats</h2>
+      <p>La sauvegarde s’est terminée avec le statut <strong>Success</strong>.</p>
+      <img src="img/backup-error/result.png" alt="Sauvegarde terminée avec succès">
+    </section>
+
+    <section class="mission-competences">
+      <h2>Compétences mobilisées</h2>
+      <ul>
+        <li>Veeam Backup &amp; Replication</li>
+        <li>VMware vCenter</li>
+        <li>Diagnostic et gestion des licences</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Romain Begot – Portfolio Professionnel | BTS SIO SISR</p>
+  </footer>
+
+  <script src="js/loader.js"></script>
+</body>
+</html>
