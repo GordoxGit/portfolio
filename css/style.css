@@ -2035,10 +2035,14 @@ footer p {
    z-index: 1002;
  }
  
- .submenu-list.submenu-open {
-   display: block !important;
-   animation: slideDown 0.3s ease-out;
- }
+.submenu-list.submenu-open {
+  display: block !important;
+  animation: slideDown 0.3s ease-out;
+}
+
+.submenu-list li {
+  width: 100%;
+}
  
  .submenu-list a {
    padding: 14px 20px 14px 40px;
