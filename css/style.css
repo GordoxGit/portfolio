@@ -1346,13 +1346,6 @@ section:target {
  margin-top: 24px;
 }
 
-.veille-stats {
- display: flex;
- justify-content: center;
- gap: 32px;
- margin-top: 32px;
- flex-wrap: wrap;
-}
 
 .veille-grid {
  display: grid;
@@ -2144,9 +2137,6 @@ footer p {
    gap: 24px;
  }
  
- .veille-stats {
-   gap: 20px;
- }
  
  .sources-grid {
    grid-template-columns: 1fr;
