@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sauvegarde en erreur - Portfolio Romain Begot</title>
+  <meta name="description" content="Procédure de résolution d'une sauvegarde Veeam échouée et relance." />
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .backup-error .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    .backup-error .info-block {
+      background: var(--c-bg-card);
+      border: 1px solid rgba(6,214,160,0.1);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+    .backup-error img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div id="page-loader">
+    <div class="loader-logo">
+      <img src="../img/22 mai 2025, 13_51_32.png" alt="Logo Romain Begot - Portfolio Professionnel" class="loader-img">
+      <div class="loader-cyber"></div>
+    </div>
+    <div class="loader-text">Chargement du Portfolio...</div>
+  </div>
+
+  <header>
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="../index.html" class="navbar-logo">
+          <img src="../img/22 mai 2025, 13_51_32.png" alt="Logo Romain Begot - Retour à l'accueil">
+        </a>
+        <div class="site-title">Portfolio Romain Begot</div>
+      </div>
+
+      <button class="hamburger-menu" aria-label="Ouvrir le menu de navigation">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <nav class="main-nav">
+        <ul class="menu">
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="../mon-cv.html">Mon CV</a></li>
+          <li><a href="../ateliers.html">Mes AP</a></li>
+          <li><a href="../veille-tech.html">Veille Tech</a></li>
+          <li class="submenu">
+            <a href="../stages.html" aria-haspopup="true" aria-expanded="false">Missions de Stage</a>
+            <ul class="submenu-list">
+              <li><a href="../stages.html#mission-https-apache">Passage HTTPS Apache</a></li>
+              <li><a href="backup-error.html" class="active">Sauvegarde Veeam – relance en échec</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="page-header">
+      <h1>Sauvegarde en erreur</h1>
+      <p>Analyse et reprise d'une sauvegarde Veeam qui ne s'exécutait plus.</p>
+    </header>
+
+    <section class="backup-error">
+      <div class="info-grid">
+        <div class="info-block">
+          <h2>Contexte</h2>
+          <p>La sauvegarde quotidienne d'une machine virtuelle hébergée sur notre cluster VMware a soudainement échoué. Les journaux Veeam indiquaient un problème d'accès au dépôt SMB hébergé sur un NAS Synology.</p>
+        </div>
+        <div class="info-block">
+          <h2>Actions réalisées</h2>
+          <ol>
+            <li>Test du partage réseau <img src="../img/backup-error/step-1.png" alt="Vérification du partage SMB"></li>
+            <li>Redémarrage des services Veeam <img src="../img/backup-error/step-2.png" alt="Redémarrage des services"></li>
+            <li>Consultation des logs détaillés <img src="../img/backup-error/step-3.png" alt="Logs Veeam"></li>
+            <li>Actualisation des informations d'identification du dépôt <img src="../img/backup-error/step-4.png" alt="Mise à jour des identifiants"></li>
+            <li>Exécution manuelle d'une tâche de sauvegarde <img src="../img/backup-error/step-5.png" alt="Lancement manuel"></li>
+            <li>Planification d'une nouvelle tâche <img src="../img/backup-error/step-6.png" alt="Nouvelle planification"></li>
+            <li>Suivi de l'opération <img src="../img/backup-error/step-7.png" alt="Suivi de la tâche"></li>
+            <li>Validation finale <img src="../img/backup-error/step-8.png" alt="Sauvegarde réussie"></li>
+          </ol>
+        </div>
+        <div class="info-block">
+          <h2>Résultat</h2>
+          <p>La sauvegarde a été relancée avec succès et l'ensemble des points de contrôle ont été documentés pour anticiper de futurs incidents.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Romain Begot – Portfolio Professionnel | BTS SIO SISR</p>
+  </footer>
+
+  <script src="../js/loader.js"></script>
+</body>
+</html>
