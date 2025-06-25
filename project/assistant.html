@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spécification Technique : Assistant IA Haute Fiabilité pour Scalping XAU/USD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Gris clair neutre */
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-link {
+            padding: 12px 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #d1d5db; 
+            border-left: 4px solid transparent;
+        }
+        .nav-link:hover {
+            background-color: #374151;
+            color: #ffffff;
+            border-left-color: #60a5fa;
+        }
+        .nav-link.active {
+            background-color: #1e40af;
+            color: #ffffff;
+            font-weight: 600;
+            border-left-color: #2563eb;
+            box-shadow: 0 4px 14px rgba(30, 64, 175, 0.2);
+        }
+        .nav-link.font-semibold.active { 
+             background-color: #1d4ed8; 
+        }
+        .nav-link.ml-4.active { 
+            background-color: #2563eb; 
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.05), 0 3px 7px -3px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        th, td {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 0.925rem;
+        }
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #111827;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        td {
+            background-color: #ffffff;
+            color: #374151;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background-color: #f8f9fa;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .code-block { 
+            background-color: #1f2937; 
+            color: #d1d5db; 
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.875rem; 
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #374151;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e5e7eb;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        
+        .content-card {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2.5rem;
+        }
+        h2.section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: #1e3a8a;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+         h3.subsection-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1.25rem;
+            color: #1d4ed8;
+        }
+         h4.block-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.75rem;
+            margin-bottom: 1rem;
+            color: #1e40af;
+        }
+        ul.styled-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        ul.styled-list > li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+        ul.styled-list > li::before {
+            content: "\f058"; 
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900; 
+            position: absolute;
+            left: 0;
+            top: 5px;
+            color: #2563eb;
+            font-size: 1rem;
+        }
+        ul.styled-list ul { 
+            margin-top: 0.5rem;
+            padding-left: 1.25rem; 
+        }
+        ul.styled-list ul > li::before {
+            content: "\f101"; 
+            font-size: 0.875rem; 
+        }
+
+        .page-break { page-break-after: always; }
+        /* Styles d'impression simples */
+        @media print {
+            body { font-size: 10pt; line-height: 1.2; background-color: #ffffff !important; }
+            aside { display: none !important; }
+            main { margin-left: 0 !important; padding: 1cm !important; overflow-y: visible !important; }
+            .content-section { display: block !important; margin-bottom: 2cm; }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; page-break-inside: avoid; color: #000 !important; }
+            table, figure, .code-block { page-break-inside: avoid; }
+            .content-card { background-color: transparent !important; color: #000 !important; border: 1px solid #ccc !important; box-shadow: none !important; border-radius: 0 !important; padding: 1cm;}
+            .nav-link { display: none !important; }
+            .table-container { overflow-x: visible; }
+            .code-block { background-color: #f0f0f0 !important; color: #000 !important; border: 1px solid #ccc !important;}
+            ul.styled-list > li::before { color: #000 !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+    <div class="flex min-h-screen">
+        <aside class="w-80 bg-slate-900 text-slate-100 p-6 space-y-2.5 fixed top-0 left-0 h-full overflow-y-auto print:hidden shadow-2xl">
+            <h1 class="text-2xl font-extrabold mb-10 text-blue-400 tracking-tight">Assistant IA Scalping XAU/USD</h1>
+            <nav id="report-navigation" class="space-y-1.5">
+                <a href="#" class="nav-link block" data-target="exec-summary-assistant">Résumé Exécutif</a>
+                <a href="#" class="nav-link block font-semibold" data-target="ai-architectures-assistant">Section 1: Architectures IA</a>
+                <a href="#" class="nav-link block ml-4" data-target="intro-archi-assistant">1.1. Introduction</a>
+                <a href="#" class="nav-link block ml-4" data-target="sl-approaches-assistant">1.2. Approches Supervisées (SL)</a>
+                <a href="#" class="nav-link block ml-4" data-target="rl-approaches-assistant">1.3. Approches Renforcement (RL)</a>
+                <a href="#" class="nav-link block ml-4" data-target="hybrid-models-assistant">1.4. Modèles Hybrides</a>
+                <a href="#" class="nav-link block ml-4" data-target="reco-justif-assistant">1.5. Recommandation & Justification</a>
+                <a href="#" class="nav-link block font-semibold" data-target="feature-engineering-assistant">Section 2: Ingénierie des Caractéristiques</a>
+                <a href="#" class="nav-link block ml-4" data-target="importance-feature-eng">2.1. Importance pour Scalping</a>
+                <a href="#" class="nav-link block ml-4" data-target="price-action-micro">2.2. Caractéristiques Action Prix & Microstructure</a>
+                <a href="#" class="nav-link block ml-4" data-target="optimized-indicators">2.3. Indicateurs Techniques Optimisés</a>
+                <a href="#" class="nav-link block ml-4" data-target="feature-eng-techniques">2.4. Techniques d'Ingénierie</a>
+                <a href="#" class="nav-link block ml-4" data-target="feature-selection-importance">2.5. Sélection & Importance</a>
+                <a href="#" class="nav-link block font-semibold" data-target="signal-gen-model-design">Section 3: Conception Modèle Génération Signaux</a>
+                <a href="#" class="nav-link block ml-4" data-target="unified-vs-modular">3.1. Approche Unifiée vs. Modulaire</a>
+                <a href="#" class="nav-link block ml-4" data-target="modeling-trade-direction">3.2. Modélisation Direction Trade</a>
+                <a href="#" class="nav-link block ml-4" data-target="predicting-entry-zones">3.3. Prédiction Zones d'Entrée</a>
+                <a href="#" class="nav-link block ml-4" data-target="dynamic-sl-tp">3.4. Stratégies SL Dynamique & TP Multiples</a>
+                <a href="#" class="nav-link block ml-4" data-target="high-confidence-scores">3.5. Génération Scores Haute Confiance</a>
+                <a href="#" class="nav-link block font-semibold" data-target="market-data-strategy-assistant">Section 4: Stratégie Données de Marché</a>
+                <a href="#" class="nav-link block ml-4" data-target="tick-vs-ohlcv">4.1. Données Tick vs. OHLCV</a>
+                <a href="#" class="nav-link block ml-4" data-target="high-quality-sources">4.2. Sources Données XAU/USD Haute Qualité</a>
+                <a href="#" class="nav-link block ml-4" data-target="data-cleaning-broker">4.3. Nettoyage, Prétraitement & Spécificités Courtier</a>
+                <a href="#" class="nav-link block ml-4" data-target="orderbook-sentiment-optional">4.4. Données Carnet d'Ordres/Sentiment (Optionnel)</a>
+                <a href="#" class="nav-link block font-semibold" data-target="labeling-strategies-assistant">Section 5: Stratégies d'Étiquetage</a>
+                <a href="#" class="nav-link block ml-4" data-target="critique-standard-labeling">5.1. Critique Étiquetage Standard</a>
+                <a href="#" class="nav-link block ml-4" data-target="custom-tbm">5.2. Personnalisation Méthode Triple Barrière (TBM)</a>
+                <a href="#" class="nav-link block ml-4" data-target="alternative-labeling-confidence">5.3. Étiquetage Alternatif (>90% Confiance)</a>
+                <a href="#" class="nav-link block ml-4" data-target="concurrency-handling">5.4. Gestion Concurrence</a>
+                <a href="#" class="nav-link block font-semibold" data-target="validation-benchmarking-assistant">Section 6: Validation & Benchmarking Rigoureux</a>
+                <a href="#" class="nav-link block ml-4" data-target="wfv-framework">6.1. Cadre Validation Walk-Forward</a>
+                <a href="#" class="nav-link block ml-4" data-target="kpis-assistant">6.2. Indicateurs Clés de Performance (KPIs)</a>
+                <a href="#" class="nav-link block ml-4" data-target="benchmarking-naive">6.3. Benchmarking vs Stratégies Naïves</a>
+                <a href="#" class="nav-link block font-semibold" data-target="backtesting-sim-capital">Section 7: Simulation Backtesting Réaliste (CFD Capital.com)</a>
+                <a href="#" class="nav-link block ml-4" data-target="importance-realistic-sim">7.1. Importance Simulation Réaliste</a>
+                <a href="#" class="nav-link block ml-4" data-target="modeling-variable-spreads">7.2. Modélisation Spreads Variables</a>
+                <a href="#" class="nav-link block ml-4" data-target="modeling-slippage">7.3. Modélisation Slippage</a>
+                <a href="#" class="nav-link block ml-4" data-target="incorporating-fees">7.4. Incorporation Commissions/Frais</a>
+                <a href="#" class="nav-link block ml-4" data-target="simulating-latency-manual">7.5. Simulation Latence & Exécution Manuelle</a>
+                <a href="#" class="nav-link block ml-4" data-target="backtesting-libraries-assistant">7.6. Bibliothèques de Backtesting</a>
+                <a href="#" class="nav-link block font-semibold" data-target="robustness-reliability-xai">Section 8: Robustesse, Fiabilité & Interprétabilité</a>
+                <a href="#" class="nav-link block ml-4" data-target="minimizing-false-positives">8.1. Techniques Minimisation Faux Positifs</a>
+                <a href="#" class="nav-link block ml-4" data-target="xai-transparency">8.2. Méthodes XAI pour Transparence</a>
+                <a href="#" class="nav-link block ml-4" data-target="realtime-monitoring-adaptation">8.3. Surveillance Temps Réel & Adaptation</a>
+                <a href="#" class="nav-link block font-semibold" data-target="implementation-blueprint-assistant">Section 9: Plan d'Implémentation (Environnements Contraints)</a>
+                <a href="#" class="nav-link block ml-4" data-target="python-libs-reco">9.1. Recommandations Bibliothèques Python</a>
+                <a href="#" class="nav-link block ml-4" data-target="system-architecture-assistant">9.2. Architecture Système</a>
+                <a href="#" class="nav-link block ml-4" data-target="retraining-model-management">9.3. Plan Réentraînement & Gestion Modèles</a>
+                <a href="#" class="nav-link block font-semibold" data-target="optional-enhancements-news">Section 10: Évaluation Améliorations Optionnelles (Nouvelles & Sentiment)</a>
+                <a href="#" class="nav-link block ml-4" data-target="value-vs-complexity-news">10.1. Proposition Valeur vs Complexité</a>
+                <a href="#" class="nav-link block ml-4" data-target="practical-integration-news">10.2. Approches Intégration Pratiques</a>
+                <a href="#" class="nav-link block ml-4" data-target="reco-news-integration">10.3. Recommandation</a>
+                <a href="#" class="nav-link block" data-target="conclusion-key-reco-assistant">Section 11: Conclusion & Recommandations Clés</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 ml-80 p-6 sm:p-8 md:p-12 overflow-y-auto">
+            
+            <section id="exec-summary-assistant" class="content-section active">
+                <div class="content-card">
+                    <h2 class="section-title">Résumé Exécutif : Assistant IA pour Scalping XAU/USD</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed text-lg">
+                        Ce rapport décrit la conception technique d'un assistant IA non autonome, axé exclusivement sur la génération de signaux de haute fiabilité pour le scalping manuel de XAU/USD sur les timeframes M1, M5 et M15. Le système est conçu pour assister un trader humain utilisant la plateforme Capital.com (CFD) en fournissant des suggestions opportunes pour la direction des trades (long/short/attente), des zones d'entrée précises, plusieurs niveaux de Take Profit (TP) et un Stop Loss (SL) unique et robuste, visant une confiance de signal supérieure à 90%.
+                    </p>
+                    <p class="mb-4 text-slate-700 leading-relaxed text-lg">
+                        Les contraintes clés incluent l'absence d'exécution automatisée, le respect du matériel d'entraînement local spécifié (AMD Ryzen 5 5600X, GPU 8GB VRAM, 32GB RAM) et un VPS de déploiement CPU uniquement (Debian 12, 4 vCores, 16GB RAM), en utilisant une stack open-source Python uniquement.
+                    </p>
+                    <h3 class="subsection-title">Recommandations Clés :</h3>
+                    <ul class="styled-list">
+                        <li><strong>Modélisation :</strong> Arbres à Gradient Boosté (spécifiquement LightGBM) pour leur efficacité et robustesse.</li>
+                        <li><strong>Ingénierie des Caractéristiques :</strong> Sophistiquée, axée sur la microstructure du marché.</li>
+                        <li><strong>Étiquetage :</strong> Méthode Triple Barrière personnalisée.</li>
+                        <li><strong>Validation :</strong> Rigoureuse par validation progressive (walk-forward).</li>
+                        <li><strong>Backtesting :</strong> Réaliste, simulant les conditions des CFD.</li>
+                        <li><strong>Filtrage Stratégique :</strong> (Ex: événements d'actualité, volatilité) pour atteindre l'objectif de haute fiabilité.</li>
+                        <li><strong>Surveillance et Adaptation Continues :</strong> Cruciales pour une performance soutenue.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="ai-architectures-assistant" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">Section 1: Architectures IA pour Signaux de Scalping Haute Fiabilité</h2>
+                </div>
+            </section>
+
+            <section id="intro-archi-assistant" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">1.1. Introduction</h3>
+                    <p class="mb-4 text-slate-700 leading-relaxed">
+                        Le scalping sur XAU/USD (M1, M5) présente des défis uniques : ratio bruit/signal élevé, dynamiques rapides, sensibilité à la latence. Le choix d'une architecture IA doit équilibrer précision, robustesse contre les faux signaux, interprétabilité et efficacité computationnelle (déploiement CPU). L'objectif est la génération de signaux de haute confiance pour assister une décision manuelle.
+                    </p>
+                </div>
+            </section>
+
+            <section id="sl-approaches-assistant" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">1.2. Approches d'Apprentissage Supervisé (SL)</h3>
+                    <h4 class="block-title">1.2.1. Arbres à Gradient Boosté (GBT)</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">
+                        LightGBM et XGBoost sont de forts candidats. Robustes aux features bruitées, capturent interactions non linéaires, bonne interprétabilité relative. Avantage clé : inférence CPU efficiente.
+                    </p>
+                    <p class="mb-2 text-slate-700 leading-relaxed">
+                        L'efficacité sur séries temporelles dépend d'une ingénierie des caractéristiques sophistiquée pour encoder les dépendances temporelles. Les GBT peuvent surpasser des modèles séquentiels plus complexes tout en conservant l'efficacité CPU. Leur nature d'ensemble fournit un mécanisme intrinsèque pour générer des scores de confiance. Sujets au surajustement, nécessitant une validation rigoureuse (Walk-Forward).
+                    </p>
+
+                    <h4 class="block-title">1.2.2. Réseaux Convolutifs Temporels (TCN)</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">
+                        Architecture deep learning spécialisée pour la modélisation de séquences, utilisant des convolutions causales. Capturent hiérarchies temporelles et dépendances à long terme. Entraînement possible sur GPU local. Inférence CPU peut être coûteuse selon la profondeur/dilatations. Interprétabilité moins directe.
+                    </p>
+
+                    <h4 class="block-title">1.2.3. LSTMs/Transformers (Adaptés)</h4>
+                    <p class="mb-2 text-slate-700 leading-relaxed">
+                        État de l'art pour séquences, mais demandent grands datasets et ressources importantes (entraînement/inférence). Risque élevé de surajustement du bruit sur données XAU/USD haute fréquence. Complexité et surcoût computationnel les rendent probablement inadaptés pour le déploiement CPU temps réel contraint.
+                    </p>
+                </div>
+            </section>
+
+            <section id="rl-approaches-assistant" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">1.3. Approches d'Apprentissage par Renforcement (RL)</h3>
+                    <p class="text-slate-700 leading-relaxed">
+                        Conceptuellement attractif, mais difficile à appliquer avec succès en finance. Souffre d'instabilité, nécessite conception méticuleuse de la fonction de récompense, et très inefficient en termes d'échantillons. Typiquement conçu pour optimiser une exécution automatisée, ce qui dévie de l'objectif de génération de signaux pour exécution manuelle. Inapproprié vu les contraintes et l'objectif de fiabilité.
+                    </p>
+                </div>
+            </section>
+
+            <section id="hybrid-models-assistant" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">1.4. Considérations sur les Modèles Hybrides</h3>
+                    <p class="text-slate-700 leading-relaxed">
+                        Les ensembles (ensembling) sont une technique éprouvée pour améliorer robustesse et réduire variance. Un ensemble de plusieurs modèles LightGBM (entraînés sur différents sous-ensembles de features/horizons, ou avec différents hyperparamètres) est une approche pratique. Le moyennage des prédictions ou un vote majoritaire peut stabiliser les signaux.
+                    </p>
+                </div>
+            </section>
+
+            <section id="reco-justif-assistant" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">1.5. Recommandation & Justification</h3>
+                    <p class="mb-2 text-slate-700 leading-relaxed">
+                        <strong>Recommandation Primaire :</strong> Utiliser les Arbres à Gradient Boosté (GBT), spécifiquement LightGBM, comme architecture IA principale.
+                    </p>
+                    <p class="mb-2 text-slate-700 leading-relaxed">
+                        <strong>Justification :</strong> Forte performance empirique sur données financières tabulaires, excellente efficacité computationnelle pour inférence CPU (critique pour VPS), interprétabilité relative, mécanismes intégrés pour scores de confiance.
+                    </p>
+                    <p class="text-slate-700 leading-relaxed">
+                        <strong>Recommandation Secondaire :</strong> Explorer les Ensembles de modèles LightGBM pour améliorer robustesse et fiabilité.
+                    </p>
+                    <!-- Le tableau 1 du PDF pourrait être inséré/adapté ici -->
+                     <h4 class="block-title mt-6">Tableau 1 (Adapté) : Comparaison Architectures IA pour Assistant Scalping XAU/USD</h4>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Caractéristique</th><th>GBT (LightGBM)</th><th>TCN</th><th>LSTM/Transformer</th><th>RL</th><th>Ensemble GBTs</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Type Principal</td><td>Ensemble d'arbres</td><td>Convolutions Causales</td><td>Récurrent/Attention</td><td>Optimisation Politique</td><td>Multiples GBTs</td></tr>
+                                <tr><td>Avantages (Scalping)</td><td>Efficient CPU, Robuste, Interprétable</td><td>Gestion explicite temps</td><td>Modélisation séquentielle puissante</td><td>Apprend politiques complexes</td><td>Robustesse/Fiabilité Accrues</td></tr>
+                                <tr><td>Inconvénients (Scalping)</td><td>Nécessite ing. caract. pour temps</td><td>Coût inférence CPU?, Interprét.</td><td>Coût calcul élevé, Surajustement</td><td>Instable, Complexe</td><td>Complexité entraînement accrue</td></tr>
+                                <tr><td>Efficacité Inférence CPU</td><td>Haute</td><td>Moyenne-Basse</td><td>Basse</td><td>N/A</td><td>Haute</td></tr>
+                                <tr><td>Recommandé</td><td>Oui (Principal)</td><td>Peut-être (Secondaire)</td><td>Non</td><td>Non</td><td>Oui (Amélioration)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sections 2 à 11 à ajouter sur le même modèle -->
+            <section id="feature-engineering-assistant" class="content-section page-break"><div class="content-card"><h2 class="section-title">Section 2: Ingénierie des Caractéristiques pour Scalping XAU/USD M1/M5</h2></div></section>
+            <section id="importance-feature-eng" class="content-section"><div class="content-card"><h3 class="subsection-title">2.1. Importance de l'Ingénierie des Caractéristiques</h3><p class="text-slate-700 leading-relaxed">Cruciale pour le scalping M1/M5 où le bruit domine. Les indicateurs standards laggent. Les GBT dépendent des features pour le contexte temporel.</p></div></section>
+            <section id="price-action-micro" class="content-section"><div class="content-card"><h3 class="subsection-title">2.2. Caractéristiques d'Action des Prix & Microstructure</h3><ul class="styled-list"><li><strong>Volatilité Haute Fréquence :</strong> ATR(5), ATR(10), std dev prix récents.</li><li><strong>Caractéristiques Chandeliers :</strong> Range (H-L), taille corps (C-O), ratios mèches.</li><li><strong>Momentum :</strong> ROC(3), RSI(7).</li><li><strong>Proxis Flux d'Ordres :</strong> Variations prix pondérées par volume, accélération volume ticks (si dispo).</li></ul></div></section>
+            
+            <!-- ... Sections intermédiaires ... -->
+
+            <section id="conclusion-key-reco-assistant" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">Section 11: Conclusion & Recommandations Clés</h2>
+                    <h3 class="subsection-title">11.1. Résumé des Constatations</h3>
+                    <p class="mb-4 text-slate-700 leading-relaxed">
+                        Cette conception technique trace une voie pour développer un assistant IA de haute fiabilité (>90% confiance) pour le scalping manuel de XAU/USD sur M1/M5/M15, adapté à l'environnement CFD de Capital.com et aux contraintes matérielles/logicielles spécifiées. L'analyse favorise fortement :
+                    </p>
+                    <ul class="styled-list">
+                        <li><strong>Architecture IA :</strong> Arbres à Gradient Boosté (LightGBM), potentiellement en ensemble.</li>
+                        <li><strong>Ingénierie des Caractéristiques :</strong> Axée sur la microstructure du marché, volatilité à court terme, momentum, et dynamiques temporelles pertinentes pour le scalping à partir de données OHLCV M1.</li>
+                        <li><strong>Étiquetage :</strong> Méthode Triple Barrière personnalisée avec des critères stricts pour identifier les configurations historiques de haute probabilité.</li>
+                        <li><strong>Validation :</strong> Validation Walk-Forward rigoureuse.</li>
+                        <li><strong>Backtesting :</strong> Simulation réaliste incluant spreads variables, slippage, et coûts spécifiques à Capital.com.</li>
+                        <li><strong>Amélioration Fiabilité :</strong> Seuil de confiance strict, filtrage robuste (volatilité, événements d'actualité), et potentiellement ensembling.</li>
+                        <li><strong>Interprétabilité :</strong> Utilisation de SHAP pour fournir des traces logiques.</li>
+                        <li><strong>Implémentation :</strong> Système basé sur Python, efficient, déployé sur VPS CPU, avec surveillance continue et réentraînement périodique.</li>
+                    </ul>
+
+                    <h3 class="subsection-title">11.2. Étapes Actionnables</h3>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Le processus de développement devrait suivre une approche structurée :</p>
+                    <ol class="list-decimal list-inside space-y-1 text-slate-700 leading-relaxed">
+                        <li>Acquisition & Préparation des Données.</li>
+                        <li>Ingénierie des Caractéristiques.</li>
+                        <li>Stratégie d'Étiquetage.</li>
+                        <li>Entraînement & Optimisation du Modèle (LightGBM, WFV).</li>
+                        <li>Validation Rigoureuse (KPIs, focus Précision Haut Seuil).</li>
+                        <li>Backtesting Réaliste (conditions Capital.com).</li>
+                        <li>Filtrage & Seuil de Confiance (pour objectif fiabilité).</li>
+                        <li>Déploiement sur VPS.</li>
+                        <li>Surveillance & Itération Continue.</li>
+                    </ol>
+
+                    <h3 class="subsection-title">11.3. Accent sur l'Itération et le Réalisme</h3>
+                    <p class="text-slate-700 leading-relaxed text-lg">
+                        Atteindre un taux de réussite (précision) constant de >90% pour les signaux de scalping en trading réel est un objectif extrêmement ambitieux. Les dynamiques de marché, le bruit et les facteurs d'exécution présentent des défis significatifs. La conception proposée fournit un cadre robuste, mais le succès dépendra d'une implémentation méticuleuse, d'une surveillance continue, d'une validation rigoureuse et d'un affinement itératif. La fréquence des signaux devra probablement être sacrifiée pour atteindre une haute fiabilité via un filtrage et un seuillage stricts. Le trader doit maintenir des attentes réalistes : l'assistant IA est conçu pour fournir une assistance à haute probabilité et améliorer la prise de décision, et non pour offrir des prédictions infaillibles. Une exécution manuelle disciplinée et une gestion des risques restent des composantes critiques du processus de trading global.
+                    </p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const reportNavigation = document.getElementById('report-navigation');
+            
+            function showSection(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+            }
+            
+            function updateActiveLink(targetId) {
+                 navLinks.forEach(navLink => {
+                    navLink.classList.toggle('active', navLink.dataset.target === targetId);
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const targetId = this.dataset.target;
+                    
+                    history.pushState(null, null, '#' + targetId); 
+                    showSection(targetId);
+                    updateActiveLink(targetId);
+                    
+                    const linkRect = this.getBoundingClientRect();
+                    const navRect = reportNavigation.getBoundingClientRect();
+                    if (linkRect.bottom > navRect.bottom || linkRect.top < navRect.top) {
+                         this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                     document.querySelector('main').scrollTop = 0; 
+                });
+            });
+            
+            function loadSectionFromHash() {
+                let initialTargetId = 'exec-summary-assistant'; // Section par défaut pour ce rapport
+                if (window.location.hash) {
+                    const hashTarget = window.location.hash.substring(1);
+                    const targetElement = document.getElementById(hashTarget);
+                    if (targetElement && targetElement.classList.contains('content-section')) {
+                        initialTargetId = hashTarget;
+                    }
+                }
+                showSection(initialTargetId);
+                updateActiveLink(initialTargetId);
+                const activeLink = reportNavigation.querySelector('.nav-link.active');
+                if (activeLink) {
+                    const linkRect = activeLink.getBoundingClientRect();
+                    const navRect = reportNavigation.getBoundingClientRect();
+                     if (linkRect.bottom > navRect.bottom || linkRect.top < navRect.top) {
+                        activeLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            }
+
+            loadSectionFromHash();
+            window.addEventListener('hashchange', loadSectionFromHash);
+        });
+    </script>
+</body>
+</html>

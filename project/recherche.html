@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Recherche Technique : IA pour Scalping XAU/USD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Gris clair neutre */
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-link {
+            padding: 12px 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #d1d5db; 
+            border-left: 4px solid transparent;
+        }
+        .nav-link:hover {
+            background-color: #374151;
+            color: #ffffff;
+            border-left-color: #60a5fa;
+        }
+        .nav-link.active {
+            background-color: #1e40af;
+            color: #ffffff;
+            font-weight: 600;
+            border-left-color: #2563eb;
+            box-shadow: 0 4px 14px rgba(30, 64, 175, 0.2);
+        }
+        .nav-link.font-semibold.active { 
+             background-color: #1d4ed8; 
+        }
+        .nav-link.ml-4.active { 
+            background-color: #2563eb; 
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.05), 0 3px 7px -3px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        th, td {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 0.925rem;
+        }
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #111827;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        td {
+            background-color: #ffffff;
+            color: #374151;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background-color: #f8f9fa;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .code-block { /* Style pour les blocs de code si nécessaire */
+            background-color: #1f2937; 
+            color: #d1d5db; 
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            font-size: 0.875rem; 
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #374151;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e5e7eb;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        
+        .content-card {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2.5rem;
+        }
+        h2.section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: #1e3a8a;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+         h3.subsection-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1.25rem;
+            color: #1d4ed8;
+        }
+         h4.block-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.75rem;
+            margin-bottom: 1rem;
+            color: #1e40af;
+        }
+        ul.styled-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        ul.styled-list > li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.75rem;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+        ul.styled-list > li::before {
+            content: "\f058"; 
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900; 
+            position: absolute;
+            left: 0;
+            top: 5px;
+            color: #2563eb;
+            font-size: 1rem;
+        }
+        ul.styled-list ul { 
+            margin-top: 0.5rem;
+            padding-left: 1.25rem; 
+        }
+        ul.styled-list ul > li::before {
+            content: "\f101"; 
+            font-size: 0.875rem; 
+        }
+
+        .page-break { page-break-after: always; }
+        /* Styles d'impression simples */
+        @media print {
+            body { font-size: 10pt; line-height: 1.2; background-color: #ffffff !important; }
+            aside { display: none !important; }
+            main { margin-left: 0 !important; padding: 1cm !important; overflow-y: visible !important; }
+            .content-section { display: block !important; margin-bottom: 2cm; }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; page-break-inside: avoid; color: #000 !important; }
+            table, figure, .code-block { page-break-inside: avoid; }
+            .content-card { background-color: transparent !important; color: #000 !important; border: 1px solid #ccc !important; box-shadow: none !important; border-radius: 0 !important; padding: 1cm;}
+            .nav-link { display: none !important; }
+            .table-container { overflow-x: visible; }
+            .code-block { background-color: #f0f0f0 !important; color: #000 !important; border: 1px solid #ccc !important;}
+            ul.styled-list > li::before { color: #000 !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+    <div class="flex min-h-screen">
+        <aside class="w-80 bg-slate-900 text-slate-100 p-6 space-y-2.5 fixed top-0 left-0 h-full overflow-y-auto print:hidden shadow-2xl">
+            <h1 class="text-2xl font-extrabold mb-10 text-blue-400 tracking-tight">Plan Recherche IA XAU/USD</h1>
+            <nav id="report-navigation" class="space-y-1.5">
+                <a href="#" class="nav-link block" data-target="exec-summary-plan">1. Résumé Exécutif</a>
+                <a href="#" class="nav-link block font-semibold" data-target="obj-scope-plan">2. Objectif & Portée</a>
+                <a href="#" class="nav-link block ml-4" data-target="project-goal-plan">2.1. Objectif du Projet</a>
+                <a href="#" class="nav-link block ml-4" data-target="asset-focus-plan">2.2. Actif Ciblé</a>
+                <a href="#" class="nav-link block ml-4" data-target="trading-style-plan">2.3. Style de Trading</a>
+                <a href="#" class="nav-link block ml-4" data-target="ai-functionality-plan">2.4. Fonctionnalité de l'IA</a>
+                <a href="#" class="nav-link block ml-4" data-target="key-constraints-plan">2.5. Contraintes Clés</a>
+                <a href="#" class="nav-link block font-semibold" data-target="market-analysis-plan">3. Analyse Marché XAU/USD (Haute Fréquence)</a>
+                <a href="#" class="nav-link block ml-4" data-target="price-action-volatility-plan">3.1. Action des Prix & Volatilité (2023-2025)</a>
+                <a href="#" class="nav-link block ml-4" data-target="microstructure-plan">3.2. Caractéristiques Microstructurelles</a>
+                <a href="#" class="nav-link block ml-4" data-target="noise-signal-ratio-plan">3.3. Ratios Bruit/Signal Estimés (M1-M15)</a>
+                <a href="#" class="nav-link block font-semibold" data-target="data-strategy-plan">4. Stratégie d'Acquisition & Préparation Données</a>
+                <a href="#" class="nav-link block ml-4" data-target="historical-data-sources-plan">4.1. Sources Données Historiques Haute Résolution</a>
+                <a href="#" class="nav-link block ml-4" data-target="economic-event-data-plan">4.2. Accès Données Événements Économiques</a>
+                <a href="#" class="nav-link block ml-4" data-target="cleaning-preprocessing-plan">4.3. Méthodologies Nettoyage & Prétraitement</a>
+                <a href="#" class="nav-link block font-semibold" data-target="ai-ml-strategy-plan">5. Architecture IA & Stratégie ML</a>
+                <a href="#" class="nav-link block ml-4" data-target="supervised-models-plan">5.1. Modèles Supervisés Optimaux</a>
+                <a href="#" class="nav-link block ml-4" data-target="rl-feasibility-plan">5.2. Faisabilité Apprentissage par Renforcement (PPO)</a>
+                <a href="#" class="nav-link block ml-4" data-target="signal-labeling-plan">5.3. Approches Étiquetage Signaux</a>
+                <a href="#" class="nav-link block ml-4" data-target="feature-engineering-plan">5.4. Ingénierie des Caractéristiques Efficace</a>
+                <a href="#" class="nav-link block ml-4" data-target="data-augmentation-plan">5.5. Augmentation Données & Données Synthétiques</a>
+                <a href="#" class="nav-link block" data-target="backtesting-framework-plan">6. Framework Backtesting & Simulation Robuste</a>
+                <a href="#" class="nav-link block" data-target="infrastructure-design-plan">7. Conception Infrastructure (Contraintes)</a>
+                <a href="#" class="nav-link block" data-target="news-integration-plan">8. Intégration Intelligence Nouvelles (Optionnel)</a>
+                <a href="#" class="nav-link block" data-target="monitoring-risk-xai-plan">9. Surveillance, Gestion Risques & Explicabilité</a>
+                <a href="#" class="nav-link block" data-target="dev-timeline-plan">10. Calendrier & Étapes Développement Suggérés</a>
+                <a href="#" class="nav-link block" data-target="conclusion-plan">11. Conclusion du Plan</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 ml-80 p-6 sm:p-8 md:p-12 overflow-y-auto">
+            
+            <section id="exec-summary-plan" class="content-section active">
+                <div class="content-card">
+                    <h2 class="section-title">1. Résumé Exécutif du Plan de Recherche</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed text-lg">
+                        Ce rapport détaille un cadre technique complet pour un développeur solo visant à construire un système basé sur l'IA pour générer des signaux de trading de haute précision, exclusivement pour le scalping et le trading intraday de XAU/USD (or). L'objectif principal est d'atteindre une fiabilité prédictive de plus de 90% pour ces signaux, destinés à une exécution manuelle. Le développement est contraint par l'utilisation d'outils open-source, d'API gratuites, et d'un matériel local spécifique pour l'entraînement, avec un déploiement sur un VPS CPU uniquement.
+                    </p>
+                    <p class="mb-4 text-slate-700 leading-relaxed text-lg">
+                        L'analyse indique que les marchés de l'or (XAU/USD) sur la période 2023-2025 ont été caractérisés par une volatilité significative. Pour le scalping, XAU/USD offre une liquidité élevée, mais cela varie selon les sessions, et les traders font face à des défis liés aux spreads, au slippage, et au ratio bruit/signal élevé sur les timeframes M1-M5. Atteindre l'objectif de fiabilité >90% est exceptionnellement difficile et nécessitera une approche multifacette.
+                    </p>
+                    <h3 class="subsection-title">Points Clés du Plan :</h3>
+                    <ul class="styled-list">
+                        <li><strong>Acquisition de Données :</strong> Dépendance aux datasets publics (ex: Kaggle) pour les données historiques M1/M5, nécessitant une validation rigoureuse. Les API temps réel gratuites ont des limitations.</li>
+                        <li><strong>Architecture IA :</strong> Les Arbres de Décision à Gradient Boosté (CatBoost, LightGBM) sont recommandés comme point de départ. Les LSTM et CNN 1D sont des options, mais leurs demandes en ressources doivent être considérées. Le Reinforcement Learning (PPO) est une alternative puissante mais complexe.</li>
+                        <li><strong>Backtesting Robuste :</strong> Essentiel, avec modélisation réaliste des coûts de transaction et optimisation par validation progressive (walk-forward).</li>
+                        <li><strong>Déploiement :</strong> Possible sur le VPS spécifié avec une architecture modulaire (microservices systemd, Redis Streams) ou une application monolithique bien structurée.</li>
+                    </ul>
+                     <p class="mt-4 text-slate-700 leading-relaxed text-lg">
+                        Le rapport conclut par une feuille de route de développement par phases, soulignant le développement itératif et les tests rigoureux.
+                    </p>
+                </div>
+            </section>
+
+            <section id="obj-scope-plan" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">2. Clarification de l'Objectif et de la Portée</h2>
+                </div>
+            </section>
+
+            <section id="project-goal-plan" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">2.1. Objectif du Projet</h3>
+                    <p class="mb-4 text-slate-700 leading-relaxed">
+                        L'objectif fondamental est le développement d'un système d'Intelligence Artificielle (IA) auto-apprenant, exclusivement axé sur la génération de signaux de trading de haute précision pour la paire XAU/USD. La fiabilité prédictive cible pour ces signaux en temps réel est supérieure à 90%. Il est crucial de souligner que le rôle désigné de l'IA est purement consultatif ; elle fournira des suggestions de trading, l'autorité finale de prise de décision et d'exécution des transactions revenant entièrement à l'utilisateur humain.
+                    </p>
+                     <p class="text-slate-700 leading-relaxed">
+                        La nature ambitieuse de l'objectif de fiabilité >90%, en particulier dans le contexte du trading rapide et des limitations de ressources, établit cela comme le défi central d'ingénierie et de recherche autour duquel la conception et le développement du système s'articuleront.
+                    </p>
+                </div>
+            </section>
+
+            <section id="asset-focus-plan" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">2.2. Actif Ciblé</h3>
+                    <p class="text-slate-700 leading-relaxed">
+                        Le domaine opérationnel du système d'IA est strictement limité à la paire XAU/USD (Or contre Dollar US). Aucun autre instrument financier ou classe d'actifs (cryptomonnaies, autres paires de devises, matières premières alternatives comme le pétrole, ou actions) n'entre dans le cadre de ce projet. Cette focalisation étroite vise à permettre une spécialisation approfondie sur les caractéristiques uniques du marché de l'or.
+                    </p>
+                </div>
+            </section>
+
+            <section id="trading-style-plan" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">2.3. Style de Trading</h3>
+                    <p class="text-slate-700 leading-relaxed">
+                        La méthodologie de trading ciblée par le système d'IA est le "fast trading". Cela englobe les techniques de scalping et les positions prises sur des graphiques intraday à court terme, typiquement M1 (1 minute), M5 (5 minutes), et M15 (15 minutes). Les stratégies à plus long terme, y compris le swing trading ou les approches d'investissement à long terme, sont explicitement exclues du champ de cet effort de développement.
+                    </p>
+                </div>
+            </section>
+
+            <section id="ai-functionality-plan" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">2.4. Fonctionnalité de l'IA</h3>
+                    <p class="text-slate-700 leading-relaxed">
+                        La seule sortie du système d'IA sera des signaux de trading. Ces signaux peuvent inclure des indications de points d'entrée potentiels d'achat ou de vente. Si dérivables avec un haut degré de confiance, les signaux pourraient également incorporer des niveaux suggérés de stop-loss et de take-profit. Le système n'est pas conçu pour, et n'effectuera pas, d'exécution automatisée des transactions. Cette séparation claire simplifie le développement initial.
+                    </p>
+                </div>
+            </section>
+
+            <section id="key-constraints-plan" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">2.5. Contraintes Clés</h3>
+                    <ul class="styled-list">
+                        <li><strong>Outils Open-Source et Gratuits :</strong> Utilisation exclusive de logiciels open-source et d'API gratuites. Les plateformes propriétaires (AWS, Azure) et API payantes sont à éviter.</li>
+                        <li><strong>Limitations Matérielles :</strong> Entraînement local sur PC (AMD Ryzen 5 5600X, AMD RX 6650 XT 8GB VRAM, 32GB RAM). Déploiement sur VPS Debian 12 (CPU uniquement, 4 vCores, 16GB RAM, 80GB SSD).</li>
+                        <li><strong>Mode Opérationnel :</strong> Système headless via CLI. Dissémination des signaux via fichiers logs locaux ou tableau de bord léger non-GUI.</li>
+                    </ul>
+                     <p class="mt-4 text-slate-700 leading-relaxed">
+                        Cette définition stricte est primordiale pour un développeur solo, fournissant une feuille de route claire et prévenant la dérive du périmètre.
+                    </p>
+                </div>
+            </section>
+
+            <section id="market-analysis-plan" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">3. Analyse du Marché XAU/USD pour le Trading Haute Fréquence</h2>
+                </div>
+            </section>
+
+            <section id="price-action-volatility-plan" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">3.1. Action des Prix et Volatilité Récentes (2023-2025)</h3>
+                    <p class="mb-4 text-slate-700 leading-relaxed">
+                        La paire XAU/USD a montré des fluctuations de prix et une volatilité considérables durant 2023-2025, façonnées par des facteurs macroéconomiques, géopolitiques et le sentiment des investisseurs. Un événement notable fut la montée de l'or à un sommet historique de 3500 $/once en avril 2025, catalysée par de nouvelles politiques commerciales protectionnistes américaines et des critiques publiques de la Réserve Fédérale.
+                    </p>
+                    <h4 class="block-title">Facteurs Clés d'Influence :</h4>
+                    <ul class="styled-list">
+                        <li><strong>Force/Faiblesse du Dollar US (DXY) :</strong> Corrélation inverse significative.</li>
+                        <li><strong>Attentes de Taux d'Intérêt & Politique Monétaire (Fed) :</strong> Cruciales. Des baisses de taux attendues ont soutenu l'or.</li>
+                        <li><strong>Tensions Géopolitiques & Demande de Valeur Refuge :</strong> Augmentation de la demande en période de risque.</li>
+                        <li><strong>Préoccupations Inflationnistes :</strong> L'or comme couverture contre l'inflation.</li>
+                        <li><strong>Achats des Banques Centrales :</strong> Demande structurelle notable, notamment pour diversifier les réserves.</li>
+                    </ul>
+                    <p class="mt-4 text-slate-700 leading-relaxed">
+                        La volatilité devrait rester élevée. Le découplage observé de l'or par rapport aux bons du Trésor US signale des dynamiques de marché potentiellement changeantes, un défi pour les modèles IA basés sur des corrélations historiques.
+                    </p>
+                    <!-- Le tableau 2.1 du PDF pourrait être inséré/adapté ici -->
+                    <h4 class="block-title mt-6">Tableau 2.1 (Adapté) : Principaux Moteurs des Prix XAU/USD et Impact Récent</h4>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Moteur</th><th>Mécanisme d'Impact</th><th>Pertinence pour le Scalping</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Dollar US (DXY)</td><td>Corrélation inverse</td><td>Haute volatilité du DXY peut créer des opportunités.</td></tr>
+                                <tr><td>Politique Fed / Taux</td><td>Coût d'opportunité de détention de l'or</td><td>Annonces Fed = événements de volatilité majeurs.</td></tr>
+                                <tr><td>Tensions Géopolitiques</td><td>Demande de valeur refuge</td><td>Peut causer des pics soudains, imprévisibles.</td></tr>
+                                <tr><td>Inflation</td><td>Or comme couverture</td><td>Peut influencer les tendances sous-jacentes.</td></tr>
+                                <tr><td>Demande Banques Centrales</td><td>Support structurel des prix</td><td>Impact moins direct sur M1/M5, contribue à la liquidité.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="microstructure-plan" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">3.2. Caractéristiques Microstructurelles Pertinentes de XAU/USD pour le Scalping Algorithmique</h3>
+                    <p class="mb-4 text-slate-700 leading-relaxed">
+                        La microstructure du marché XAU/USD est principalement décentralisée (OTC), avec une liquidité variable selon les sessions de trading (plus élevée lors du chevauchement Londres/New York).
+                    </p>
+                    <ul class="styled-list">
+                        <li><strong>Spreads Bid-Ask :</strong> Coût direct pour les scalpers. Peuvent être serrés (ex: 0.53 points) mais s'élargissent avec la volatilité/faible liquidité.</li>
+                        <li><strong>Exécution des Ordres :</strong> Susceptible au slippage, surtout pour les ordres au marché en période de volatilité.</li>
+                        <li><strong>Visibilité du Carnet d'Ordres (Contexte Retail) :</strong> Limitée (Niveau 2 ou sentiment agrégé au mieux). L'IA ne peut pas se baser sur une analyse profonde du carnet d'ordres.</li>
+                    </ul>
+                    <p class="mt-4 text-slate-700 leading-relaxed">
+                        Le succès d'une IA de scalping dépend de sa capacité à opérer efficacement dans ces contraintes. Un filtre de liquidité/volatilité pourrait être bénéfique.
+                    </p>
+                    <!-- Le tableau 2.2 du PDF pourrait être inséré/adapté ici -->
+                </div>
+            </section>
+
+            <section id="noise-signal-ratio-plan" class="content-section">
+                 <div class="content-card">
+                    <h3 class="subsection-title">3.3. Ratios Bruit/Signal Estimés sur les Timeframes M1, M5, et M15</h3>
+                    <p class="mb-4 text-slate-700 leading-relaxed">
+                        Un défi fondamental est le bruit inhérent aux séries temporelles financières, surtout sur les timeframes courts.
+                    </p>
+                    <ul class="styled-list">
+                        <li><strong>M1 :</strong> Niveau de bruit le plus élevé. Action des prix chaotique. Ratio signal/bruit (SNR) très faible.</li>
+                        <li><strong>M5 :</strong> Bruit significatif, mais reconnaissance de patterns légèrement meilleure que M1. SNR faible.</li>
+                        <li><strong>M15 :</strong> Bruit comparativement réduit. Tendances et patterns plus discernables. SNR modéré.</li>
+                    </ul>
+                    <p class="mt-4 text-slate-700 leading-relaxed">
+                        Quantifier le SNR est complexe. Une approche pratique est de l'inférer indirectement via le backtesting rigoureux : les stratégies avec de meilleurs rendements ajustés au risque capturent probablement un SNR plus favorable.
+                    </p>
+                     <p class="mt-4 text-slate-700 leading-relaxed">
+                        Atteindre >90% de fiabilité prédictive sur M1/M5 est très ambitieux. Cela impliquera probablement des filtres de signaux très stricts basés sur des scores de confiance élevés, plutôt qu'une haute précision brute de chaque signal généré.
+                    </p>
+                    <!-- Le tableau 2.3 du PDF pourrait être inséré/adapté ici -->
+                </div>
+            </section>
+
+            <!-- Les sections 4 à 11 suivront une structure similaire, en adaptant le contenu du PDF -->
+
+            <section id="data-strategy-plan" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">4. Stratégie d'Acquisition et de Préparation des Données</h2>
+                     <p class="mb-6 text-slate-700 leading-relaxed">L'acquisition de données historiques haute résolution de qualité est fondamentale, mais difficile sous la contrainte "gratuite".</p>
+                </div>
+            </section>
+
+            <section id="historical-data-sources-plan" class="content-section">
+                <div class="content-card">
+                    <h3 class="subsection-title">4.1. Sources pour Données Historiques XAU/USD Haute Résolution (Tick/1-Minute)</h3>
+                    <ul class="styled-list">
+                        <li><strong>Datasets Kaggle :</strong> Plusieurs datasets contribués par des utilisateurs (Novandra Anugrah, Souvik Samanta, Zeesolver) prétendent couvrir 2004-2025 avec des timeframes M5 et parfois M1. <strong>Action requise :</strong> Vérification méticuleuse de la granularité réelle (M1), qualité, gaps, exactitude des timestamps.</li>
+                        <li><strong>API de Courtiers (Comptes Démo) :</strong> FXCM, OANDA pourraient fournir des données historiques. Faisabilité et limitations (profondeur, fréquence des requêtes, qualité sur démo) à investiguer.</li>
+                        <li><strong>API Spécialisées (Niveaux Gratuits) :</strong>
+                            <ul class="styled-list">
+                                <li><strong>TwelveData :</strong> Offre XAU/USD, intervalle "1min". Plan gratuit très limité (8 crédits API/min, 800/jour), rendant les téléchargements historiques en masse impraticables. Streaming temps réel pour un seul instrument pourrait être viable.</li>
+                                <li><strong>Metals-API (metals-api.com / metals.dev) :</strong> Niveaux gratuits très restrictifs (ex: 100 requêtes/mois), inadaptés pour données haute fréquence.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p class="mt-4 text-slate-700 leading-relaxed"><strong>Conclusion sur les Données Historiques :</strong> Kaggle est la piste la plus prometteuse. TwelveData (gratuit) pour flux live si géré avec soin.</p>
+                </div>
+            </section>
+            
+            <!-- ... Sections intermédiaires (AI/ML, Backtesting, etc.) ... -->
+            <section id="ai-ml-strategy-plan" class="content-section page-break"><div class="content-card"><h2 class="section-title">5. Architecture IA & Stratégie ML</h2><p class="text-slate-700 leading-relaxed">La sélection d'une architecture IA et d'une stratégie ML appropriées est pivotale.</p></div></section>
+            <section id="supervised-models-plan" class="content-section"><div class="content-card"><h3 class="subsection-title">5.1. Modèles Supervisés Optimaux</h3><ul class="styled-list"><li><strong>GBDT (CatBoost, LightGBM) :</strong> Point de départ recommandé (efficacité, gestion données hétérogènes).</li><li><strong>RNN (LSTM, GRU) :</strong> Pour dépendances temporelles, mais gourmands en ressources.</li><li><strong>CNN 1D :</strong> Pour extraction de motifs locaux, plus légers.</li><li><strong>Modèles Hybrides (CNN-LSTM) :</strong> Puissants mais complexes.</li></ul></div></section>
+            <section id="rl-feasibility-plan" class="content-section"><div class="content-card"><h3 class="subsection-title">5.2. Faisabilité Apprentissage par Renforcement (PPO)</h3><p class="text-slate-700 leading-relaxed">Feasible mais très complexe pour un développeur solo (conception environnement, représentation état/action, fonction de récompense, temps d'entraînement).</p></div></section>
+            <section id="signal-labeling-plan" class="content-section"><div class="content-card"><h3 class="subsection-title">5.3. Approches d'Étiquetage des Signaux</h3><p class="text-slate-700 leading-relaxed">Classification (Binaire/Ternaire). Pour scalping, étiquettes basées sur atteinte d'un petit profit cible (couvrant coûts) en N barres. Méthode Triple Barrière recommandée.</p></div></section>
+            <section id="feature-engineering-plan" class="content-section"><div class="content-card"><h3 class="subsection-title">5.4. Ingénierie des Caractéristiques Efficace</h3><ul class="styled-list"><li><strong>Action des Prix :</strong> Prix/retours décalés, range chandeliers, patterns.</li><li><strong>Basées sur le Temps :</strong> Heure, jour, session.</li><li><strong>Volume :</strong> Brut, MM Volume, VROC, OBV, VWAP.</li><li><strong>Indicateurs Techniques (paramètres courts) :</strong> EMA, MACD, RSI, Stochastique, Bandes de Bollinger, ATR.</li><li><strong>Sélection de Caractéristiques :</strong> Cruciale (importance GBDT, SHAP, RFE).</li></ul></div></section>
+            <section id="data-augmentation-plan" class="content-section"><div class="content-card"><h3 class="subsection-title">5.5. Augmentation des Données & Données Synthétiques</h3><p class="text-slate-700 leading-relaxed">Techniques simples (jittering léger) avec prudence. Modèles génératifs (GANs, VAEs) probablement hors de portée initialement.</p></div></section>
+
+
+            <section id="backtesting-framework-plan" class="content-section page-break"><div class="content-card"><h2 class="section-title">6. Framework de Backtesting et Simulation Robuste</h2><p class="text-slate-700 leading-relaxed">Essentiel, surtout pour le scalping.</p><ul class="styled-list"><li><strong>Frameworks Python :</strong> vectorbt (rapide, vectorisé), Backtrader (event-driven, mature), Backtesting.py (simple). Recommandation : commencer par Backtesting.py ou Backtrader.</li><li><strong>Modélisation Réaliste des Coûts :</strong> Slippage (variable), Latence, Spread (dynamique), Commissions.</li><li><strong>Validation Walk-Forward (WFO) :</strong> Nécessaire pour XAU/USD. Définir périodes In-Sample/Out-of-Sample et fréquence de roulement adaptées au scalping.</li><li><strong>Analyse Confiance Signal & Fiabilité :</strong> Utiliser scores de confiance du modèle, backtester par tranches de confiance, calibrer si besoin. Viser >90% de fiabilité via filtrage sélectif.</li></ul></div></section>
+            <section id="infrastructure-design-plan" class="content-section page-break"><div class="content-card"><h2 class="section-title">7. Conception de l'Infrastructure (sous Contraintes)</h2><ul class="styled-list"><li><strong>Entraînement Local :</strong> AMD Ryzen 5 5600X, RX 6650 XT 8GB, 32GB RAM. Gérer VRAM pour NNs. Linux recommandé pour support ROCm.</li><li><strong>Déploiement VPS CPU :</strong> Debian 12, 4vCores, 16GB RAM, 80GB SSD. Modèles GBDT ou NNs optimisés pour inférence CPU. Architecture microservices (systemd, Redis Streams) ou monolithique structurée. SQLite pour logs.</li><li><strong>Opération Headless 24/7 :</strong> systemd pour gestion processus, logging complet, monitoring basique (htop, cron), alertes email simples, backups SQLite. Livraison signaux via fichier log (<code>tail -f</code>).</li></ul></div></section>
+            <section id="news-integration-plan" class="content-section page-break"><div class="content-card"><h2 class="section-title">8. Intégration de l'Intelligence des Nouvelles (Optionnel)</h2><p class="text-slate-700 leading-relaxed">Difficile pour scalping avec API gratuites à cause de la latence. APITube.io (gratuit) a 12h de délai. Calendriers éco (FXStreet) peuvent être scrapés pour événements planifiés. Limiter à la prise de conscience des événements majeurs pour pauser le trading plutôt qu'à trader la nouvelle elle-même.</p></div></section>
+            <section id="monitoring-risk-xai-plan" class="content-section page-break"><div class="content-card"><h2 class="section-title">9. Surveillance, Gestion des Risques et Explicabilité (XAI)</h2><ul class="styled-list"><li><strong>Surveillance Qualité Signal :</strong> Win rate, Profit Factor, Sharpe, MDD, fréquence signaux, distribution scores confiance. Détection de dérive (DDM, KSWIN sur erreurs ou caractéristiques).</li><li><strong>Explicabilité (XAI) pour CLI :</strong> Importance des caractéristiques (CatBoost, LIME, SHAP TreeSHAP). Afficher top N caractéristiques contribuant au signal.</li><li><strong>Filtrage Signaux pour Fiabilité Max :</strong> Seuil de confiance, confirmation multi-facteurs (indicateurs, volume), filtrage par régime/temps.</li></ul></div></section>
+            <section id="dev-timeline-plan" class="content-section page-break"><div class="content-card"><h2 class="section-title">10. Calendrier et Étapes de Développement Suggérés</h2><ul class="styled-list"><li><strong>Phase 1 (4-6 sem.) :</strong> Fondation Données & Environnement (collecte, nettoyage, backtester basique).</li><li><strong>Phase 2 (8-12 sem.) :</strong> Modèle Baseline & Ingénierie Caractéristiques (features avancées, étiquetage, entraînement GBDT, backtesting initial).</li><li><strong>Phase 3 (8-10 sem.) :</strong> Évaluation Modèle Avancée & Backtesting Robuste (WFO, modélisation coûts affinée, analyse confiance).</li><li><strong>Phase 4 (6-8 sem.) :</strong> Déploiement VPS & Monitoring Initial (setup VPS, services/app, intégration données live, tests).</li><li><strong>Phase 5 (Continu) :</strong> Optimisation, Boucle Auto-Apprentissage & Itération (monitoring live, réentraînement périodique, XAI, affinements).</li></ul><p class="text-slate-700 leading-relaxed">Calendrier agressif pour un développeur solo. Flexibilité et attentes réalistes sont clés.</p></div></section>
+
+            <section id="conclusion-plan" class="content-section page-break">
+                <div class="content-card">
+                    <h2 class="section-title">11. Conclusion du Plan de Recherche</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed text-lg">
+                        Développer un système IA pour le scalping XAU/USD avec >90% de fiabilité est une entreprise formidable sous les contraintes données. Ce rapport a esquissé une feuille de route technique.
+                    </p>
+                    <p class="mb-4 text-slate-700 leading-relaxed text-lg">
+                        Le succès dépendra d'un système holistique incluant : données de haute qualité, sélection pragmatique de modèles IA (GBDT en premier), ingénierie des caractéristiques et étiquetage robustes, backtesting réaliste avec WFO, filtrage des signaux basé sur la confiance, et déploiement efficient et surveillé.
+                    </p>
+                     <p class="text-slate-700 leading-relaxed text-lg">
+                        La contrainte "API gratuite" limite l'intégration de nouvelles en temps réel. Le parcours sera itératif. L'objectif de >90% est ambitieux mais un système bien conçu, axé sur des signaux à haute confiance, offre la meilleure voie.
+                    </p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const reportNavigation = document.getElementById('report-navigation');
+            
+            function showSection(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+            }
+            
+            function updateActiveLink(targetId) {
+                 navLinks.forEach(navLink => {
+                    navLink.classList.toggle('active', navLink.dataset.target === targetId);
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const targetId = this.dataset.target;
+                    
+                    history.pushState(null, null, '#' + targetId); 
+                    showSection(targetId);
+                    updateActiveLink(targetId);
+                    
+                    const linkRect = this.getBoundingClientRect();
+                    const navRect = reportNavigation.getBoundingClientRect();
+                    if (linkRect.bottom > navRect.bottom || linkRect.top < navRect.top) {
+                         this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                     document.querySelector('main').scrollTop = 0; 
+                });
+            });
+            
+            function loadSectionFromHash() {
+                let initialTargetId = 'exec-summary-plan'; // Section par défaut pour ce rapport
+                if (window.location.hash) {
+                    const hashTarget = window.location.hash.substring(1);
+                    const targetElement = document.getElementById(hashTarget);
+                    if (targetElement && targetElement.classList.contains('content-section')) {
+                        initialTargetId = hashTarget;
+                    }
+                }
+                showSection(initialTargetId);
+                updateActiveLink(initialTargetId);
+                const activeLink = reportNavigation.querySelector('.nav-link.active');
+                if (activeLink) {
+                    const linkRect = activeLink.getBoundingClientRect();
+                    const navRect = reportNavigation.getBoundingClientRect();
+                     if (linkRect.bottom > navRect.bottom || linkRect.top < navRect.top) {
+                        activeLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            }
+
+            loadSectionFromHash();
+            window.addEventListener('hashchange', loadSectionFromHash);
+        });
+    </script>
+</body>
+</html>

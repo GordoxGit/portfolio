@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Missions de Stage - Romain Begot | BTS SIO SISR</title>
+  <meta name="description" content="Détail des missions de stage de Romain Begot : Passage en HTTPS avec Apache, configuration serveur et sécurisation.">
+  <meta name="keywords" content="stage BTS SIO, mission HTTPS, Apache, redirection, SSL, virtual host, configuration serveur, Romain Begot">
+  <meta name="author" content="Romain Begot">
+  
+  <meta property="og:title" content="Missions de Stage - Romain Begot">
+  <meta property="og:description" content="Mission de stage : Passage en HTTPS avec Apache en redirection.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  
+  <link rel="stylesheet" href="css/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9796611849898674" crossorigin="anonymous"></script>
+  <style>
+    /* Styles spécifiques pour la page des missions de stage */
+    .mission-stage {
+      background: var(--c-bg-card);
+      border: 1px solid rgba(6, 214, 160, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      margin-bottom: 56px;
+      transition: all var(--transition-normal);
+    }
+    .mission-stage:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: var(--c-accent);
+    }
+    .mission-stage > h2 { /* Titre principal de la mission */
+      font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--c-text);
+      margin-top: 0; /* Reset margin-top for the main mission title */
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--c-accent);
+      text-align: center;
+    }
+    .mission-stage > h2::before { /* Remove default h2 line from style.css if any */
+        display: none;
+    }
+    .mission-stage h3 { /* Titres de section (Contexte, Étapes) */
+      font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+      color: var(--c-text-secondary);
+      margin-top: 32px;
+      margin-bottom: 24px;
+      padding-left: 0; 
+      border-bottom: 1px solid rgba(6, 214, 160, 0.3);
+      padding-bottom: 10px;
+    }
+     .mission-stage h3::before { /* Remove default h2/h3 line from style.css if any */
+        display: none;
+    }
+
+    .mission-contexte .email-exchange {
+      background-color: rgba(6, 214, 160, 0.03);
+      border-left: 4px solid var(--c-accent);
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: var(--radius-md);
+    }
+    .mission-contexte .email-exchange p {
+      margin-bottom: 10px;
+      color: var(--c-text-secondary);
+      font-style: italic;
+    }
+    .mission-contexte .email-exchange p:last-child {
+      margin-bottom: 0;
+    }
+    .mission-contexte .email-exchange strong {
+        font-style: normal;
+        color: var(--c-text);
+    }
+     .mission-contexte > p {
+        font-size: 1.05rem;
+        color: var(--c-text-secondary);
+        margin-bottom: 20px; /* Added margin for spacing */
+     }
+
+    .mission-etapes ol {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 24px;
+    }
+    .mission-etapes ol > li {
+      margin-bottom: 32px;
+      padding: 24px;
+      background-color: rgba(6, 214, 160, 0.05); /* MODIFIÉ: Fond teinté pour cohérence */
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(6, 214, 160, 0.2);
+      box-shadow: var(--shadow-sm);
+    }
+    .mission-etapes ol > li > strong { /* Titre de l'étape */
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--c-text);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed rgba(6, 214, 160, 0.3);
+    }
+    .mission-etapes ol > li > p { 
+        margin-bottom: 16px;
+    }
+
+    .code-block {
+      background-color: var(--c-bg-dark); 
+      color: #f8f8f2; 
+      padding: 20px;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace; 
+      font-size: 0.95em;
+      margin: 16px 0;
+      border: 1px solid rgba(6, 214, 160, 0.2);
+      line-height: 1.6;
+    }
+
+    .command-explanation {
+      background-color: rgba(6, 214, 160, 0.05);
+      border: 1px solid rgba(6, 214, 160, 0.2);
+      padding: 16px;
+      margin: 16px 0;
+      border-radius: var(--radius-md);
+      font-size: 0.95em;
+      line-height: 1.6;
+    }
+    .command-explanation p {
+      margin-bottom: 8px;
+      color: var(--c-text-secondary);
+    }
+    .command-explanation p:last-child {
+      margin-bottom: 0;
+    }
+    .command-explanation strong { 
+      color: var(--c-accent-dark);
+      font-weight: 600;
+    }
+    .command-explanation code { 
+        font-family: 'JetBrains Mono', monospace;
+        background-color: rgba(var(--c-accent-rgb, 6, 214, 160), 0.15); /* Use accent color with alpha */
+        color: var(--c-accent-dark);
+        padding: 2px 5px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    /* Style for "Pourquoi créer ce fichier ?" blocks */
+    .reasoning-block {
+        background-color: rgba(59, 130, 246, 0.05); /* Using --c-info with alpha */
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        padding: 16px;
+        margin: 16px 0;
+        border-radius: var(--radius-md);
+        font-size: 0.95em;
+        line-height: 1.6;
+    }
+    .reasoning-block p {
+        margin-bottom: 8px;
+        color: var(--c-text-secondary);
+    }
+    .reasoning-block p:last-child {
+        margin-bottom: 0;
+    }
+    .reasoning-block strong {
+        color: #1e40af; /* Darker blue for --c-info */
+        font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div id="page-loader">
+    <div class="loader-logo">
+      <img src="img/22 mai 2025, 13_51_32.png" alt="Logo Romain Begot - Portfolio Professionnel" class="loader-img">
+      <div class="loader-cyber"></div>
+    </div>
+    <div class="loader-text">Chargement du Portfolio...</div>
+  </div>
+
+  <header>
+    <div class="navbar">
+      <div class="navbar-left">
+        <a href="index.html" class="navbar-logo">
+          <img src="img/22 mai 2025, 13_51_32.png" alt="Logo Romain Begot - Retour à l'accueil">
+          </a>
+        <div class="site-title">Portfolio Romain Begot</div>
+      </div>
+
+      <button class="hamburger-menu" aria-label="Ouvrir le menu de navigation">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+
+      <nav class="main-nav">
+        <ul class="menu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="mon-cv.html">Mon CV</a></li>
+          <li><a href="ateliers.html">Mes AP</a></li>
+          <li><a href="veille-tech.html">Veille Tech</a></li>
+          <li class="submenu">
+            <a href="stages.html" class="active" aria-haspopup="true" aria-expanded="false">Missions de Stage</a>
+            <ul class="submenu-list">
+              <li><a href="stages.html#mission-https-apache">Passage HTTPS Apache</a></li>
+              </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="page-header">
+      <h1>Missions de Stage</h1>
+      <p>Présentation détaillée des missions techniques réalisées durant mes stages, axées sur la configuration serveur, la sécurisation et l'infrastructure réseau.</p>
+    </header>
+
+    <article id="mission-https-apache" class="mission-stage">
+      <h2>Passage en HTTPS avec Apache en redirection</h2>
+      
+      <section class="mission-contexte">
+        <h3>Contexte de la mission</h3>
+        <p>L'objectif de cette mission était de sécuriser l'accès à une application CRM (HubSpot) en configurant le serveur web Apache existant pour utiliser le protocole HTTPS. L'application, nommée "Mage", était déployée via Docker sur un serveur Linux virtuel (SrvV19) et était initialement accessible via HTTP sur le port 8081 (<code>http://exemple.com:8081</code>). L'utilisation d'un certificat SSL wildcard existant pour le domaine <code>exemple.com</code> a été confirmée comme possible.</p>
+        <p>La tâche impliquait donc d'installer les modules Apache nécessaires, de configurer un Virtual Host pour gérer le trafic HTTPS sur le port 443, d'appliquer le certificat SSL, de mettre en place un reverse proxy vers l'application Docker, et enfin de rediriger tout le trafic HTTP (port 80) vers HTTPS.</p>
+      </section>
+
+      <section class="mission-etapes">
+        <h3>Étapes techniques réalisées</h3>
+        <p>Les outils principaux utilisés pour cette intervention ont été Putty pour l'exécution des commandes en SSH sur le serveur, et WinSCP pour une navigation et une édition facilitées des fichiers de configuration.</p>
+        <ol>
+          <li>
+            <strong>Étape 1 : Installation des modules Apache nécessaires</strong>
+            <p>Avant toute configuration, il est essentiel de s'assurer que le serveur Apache dispose des modules requis pour la gestion du SSL/TLS et d'autres outils utiles. Ces commandes ont été exécutées avec les droits superutilisateur.</p>
+            <pre class="code-block"><code>sudo yum install mod_ssl -y</code></pre>
+            <div class="command-explanation">
+              <p><strong>Explication de la commande :</strong></p>
+              <p><code>sudo</code> : Exécute la commande suivante avec les privilèges de superutilisateur (root), nécessaires pour installer des logiciels.</p>
+              <p><code>yum install</code> : Utilise YUM (Yellowdog Updater, Modified), le gestionnaire de paquets pour les distributions Linux basées sur RPM (comme AlmaLinux, CentOS), pour installer un nouveau paquet.</p>
+              <p><code>mod_ssl</code> : C'est le module pour le serveur HTTP Apache qui fournit une cryptographie forte en utilisant les protocoles SSL (Secure Sockets Layer) et TLS (Transport Layer Security). Il est indispensable pour activer HTTPS.</p>
+              <p><code>-y</code> : Option qui répond automatiquement "oui" (yes) à toutes les questions de confirmation que YUM pourrait poser durant le processus d'installation, rendant l'installation non interactive.</p>
+            </div>
+            <pre class="code-block"><code>sudo yum install httpd-tools -y</code></pre>
+            <div class="command-explanation">
+              <p><strong>Explication de la commande :</strong></p>
+              <p><code>httpd-tools</code> : Ce paquetage contient divers outils pour le serveur HTTP Apache. Bien que non strictement nécessaire pour SSL en soi, il inclut des utilitaires comme <code>htpasswd</code> (pour la gestion des fichiers d'authentification basique), <code>ab</code> (Apache Benchmarking, pour tester les performances), etc., qui peuvent être utiles dans la gestion globale d'un serveur Apache.</p>
+            </div>
+          </li>
+
+          <li>
+            <strong>Étape 2 : Création du fichier Virtual Host pour HTTPS (Proxy Inverse)</strong>
+            <p>La configuration d'Apache se fait majoritairement via des fichiers de configuration. Pour cette mission, nous devons définir comment Apache va gérer les requêtes HTTPS pour le domaine <code>exemple.com</code>. Cela se fait via un "Virtual Host".</p>
+            <p>Déplacement vers le répertoire des configurations spécifiques d'Apache :</p>
+            <pre class="code-block"><code>cd /etc/httpd/conf.d</code></pre>
+             <div class="reasoning-block">
+              <p><strong>Pourquoi créer un fichier Virtual Host (<code>ssl_proxy.conf</code>) ?</strong></p>
+              <p>Un Virtual Host permet à Apache de gérer plusieurs sites web ou configurations distinctes sur un même serveur. Dans ce cas précis, nous créons un Virtual Host pour le port 443 (HTTPS) afin de :</p>
+              <ul>
+                <li>Spécifier le nom de domaine concerné (<code>exemple.com</code>).</li>
+                <li>Activer le moteur SSL/TLS (<code>SSLEngine on</code>).</li>
+                <li>Indiquer les chemins vers les fichiers du certificat SSL et de la clé privée.</li>
+                <li>Mettre en place un reverse proxy pour rediriger les requêtes HTTPS reçues par Apache vers l'application CRM tournant sur Docker (port 8081).</li>
+              </ul>
+              <p>Isoler cette configuration dans un fichier dédié (<code>ssl_proxy.conf</code>) dans <code>/etc/httpd/conf.d/</code> est une bonne pratique pour la clarté et la maintenance.</p>
+            </div>
+            <p>Création et édition du fichier de configuration pour SSL et le proxy :</p>
+            <pre class="code-block"><code>nano ssl_proxy.conf</code></pre>
+            <div class="command-explanation">
+              <p><strong>Explication de la commande :</strong></p>
+              <p><code>nano</code> : Lance l'éditeur de texte en ligne de commande Nano, simple d'utilisation pour modifier des fichiers de configuration directement sur le serveur.</p>
+              <p><code>ssl_proxy.conf</code> : Nom donné au fichier de configuration. Il est courant de nommer les fichiers de configuration de manière descriptive. Ce fichier contiendra les directives pour le Virtual Host SSL et la configuration du proxy.</p>
+            </div>
+            <p>Le contenu suivant a été inséré dans le fichier <code>ssl_proxy.conf</code> :</p>
+            <pre class="code-block"><code>&lt;VirtualHost *:443&gt;
+    ServerName exemple.com
+    SSLEngine on
+    SSLCertificateFile /etc/pki/tls/certs/exemple.crt
+    SSLCertificateKeyFile /etc/pki/tls/private/exemple.key
+
+    ProxyPreserveHost On
+    ProxyPass / http://exemple.com:8081/
+    ProxyPassReverse / http://exemple.com:8081/
+&lt;/VirtualHost&gt;</code></pre>
+            <div class="command-explanation">
+              <p><strong>Explication du code de <code>ssl_proxy.conf</code> :</strong></p>
+              <p><code>&lt;VirtualHost *:443&gt;</code> : Définit un bloc de configuration pour un hôte virtuel. <code>*:443</code> signifie que cette configuration s'applique à toutes les adresses IP du serveur (<code>*</code>) pour les connexions entrantes sur le port 443 (port standard pour HTTPS).</p>
+              <p><code>ServerName exemple.com</code> : Spécifie le nom de domaine pour lequel ce Virtual Host est actif.</p>
+              <p><code>SSLEngine on</code> : Active le moteur SSL/TLS pour ce Virtual Host, ce qui est nécessaire pour le HTTPS.</p>
+              <p><code>SSLCertificateFile /etc/pki/tls/certs/exemple.crt</code> : Indique le chemin vers le fichier du certificat SSL public pour le domaine <code>exemple.com</code>.</p>
+              <p><code>SSLCertificateKeyFile /etc/pki/tls/private/exemple.key</code> : Indique le chemin vers le fichier de la clé privée correspondant au certificat SSL. Ce fichier doit être sécurisé et non accessible publiquement.</p>
+              <p><code>ProxyPreserveHost On</code> : Lorsque Apache agit comme un reverse proxy, cette directive s'assure que l'en-tête <code>Host</code> original envoyé par le client est transmis au serveur backend (l'application Docker). C'est important pour que l'application backend sache quel domaine a été demandé.</p>
+              <p><code>ProxyPass / http://exemple.com:8081/</code> : C'est la directive principale du reverse proxy. Elle indique que toutes les requêtes reçues par ce Virtual Host (<code>/</code> signifie la racine et tout ce qui suit) doivent être transmises (proxifiées) au serveur applicatif situé à l'adresse <code>http://exemple.com:8081/</code>.</p>
+              <p><code>ProxyPassReverse / http://exemple:8081/</code> : Cette directive est complémentaire à <code>ProxyPass</code>. Elle réécrit les en-têtes HTTP comme <code>Location</code>, <code>Content-Location</code> et <code>URI</code> dans les réponses du serveur backend pour qu'ils correspondent à l'URL du proxy (Apache) et non à l'URL interne du serveur backend. Cela évite des problèmes de redirection incorrecte.</p>
+            </div>
+          </li>
+
+          <li>
+            <strong>Étape 3 : Création du fichier de redirection HTTP vers HTTPS</strong>
+            <p>Pour s'assurer que tous les utilisateurs accèdent au site de manière sécurisée, il est important de rediriger automatiquement ceux qui tenteraient de se connecter en HTTP (port 80) vers la version HTTPS.</p>
+            <div class="reasoning-block">
+              <p><strong>Pourquoi créer un fichier de redirection (<code>redirect-cr.conf</code>) ?</strong></p>
+              <p>Ce fichier de configuration est dédié à la gestion du trafic arrivant sur le port 80 (HTTP). Son unique rôle est de :</p>
+              <ul>
+                <li>Capturer toutes les requêtes pour <code>exemple.com</code> sur le port 80.</li>
+                <li>Effectuer une redirection permanente (code HTTP 301) vers l'URL HTTPS correspondante (<code>https://exemple.com:8081/</code>).</li>
+              </ul>
+              <p>Cela garantit que même si un utilisateur tape <code>http://exemple.com</code> ou suit un ancien lien HTTP, il sera automatiquement dirigé vers la version sécurisée, forçant ainsi l'utilisation du HTTPS.</p>
+            </div>
+            <p>Création et édition du fichier de redirection :</p>
+            <pre class="code-block"><code>nano redirect-cr.conf</code></pre>
+             <div class="command-explanation">
+              <p><strong>Explication de la commande :</strong></p>
+              <p><code>nano redirect-cr.conf</code> : Ouvre (ou crée s'il n'existe pas) le fichier <code>redirect-cr.conf</code> avec l'éditeur Nano. Ce fichier contiendra la configuration du Virtual Host pour le port 80, responsable de la redirection.</p>
+            </div>
+            <p>Le contenu suivant a été inséré dans le fichier <code>redirect-cr.conf</code> :</p>
+            <pre class="code-block"><code>&lt;VirtualHost *:80&gt;
+    ServerName exemple.com
+    Redirect permanent / https://exemple.com:8081/
+&lt;/VirtualHost&gt;</code></pre>
+            <div class="command-explanation">
+              <p><strong>Explication du code de <code>redirect-cr.conf</code> :</strong></p>
+              <p><code>&lt;VirtualHost *:80&gt;</code> : Définit un bloc de configuration pour un hôte virtuel écoutant sur toutes les adresses IP (<code>*</code>) pour les connexions entrantes sur le port 80 (HTTP).</p>
+              <p><code>ServerName exemple.com</code> : Spécifie que cette configuration s'applique aux requêtes pour le domaine <code>exemple.com</code>.</p>
+              <p><code>Redirect permanent / https://exemple.com:8081/</code> : C'est la directive clé pour la redirection.</p>
+              <p>    <code>Redirect permanent</code> : Indique à Apache d'effectuer une redirection permanente (avec un code de statut HTTP 301). Cela signifie pour le navigateur et les moteurs de recherche que l'adresse a définitivement changé.</p>
+              <p>    <code>/</code> : S'applique à toutes les requêtes reçues sur la racine du site et tout ce qui suit.</p>
+              <p>    <code>https://exemple.com:8081/</code> : L'URL de destination vers laquelle les utilisateurs seront redirigés. Elle spécifie le protocole HTTPS et le port 8081, conformément à la configuration de l'application CRM.</p>
+            </div>
+          </li>
+
+          <li>
+            <strong>Dernière Étape : Configuration SELinux et redémarrage d'Apache</strong>
+            <p>SELinux (Security-Enhanced Linux) est un module de sécurité du noyau Linux qui peut, par défaut, empêcher Apache d'établir des connexions réseau sortantes, ce qui est nécessaire pour que le reverse proxy fonctionne (Apache doit se connecter à l'application sur le port 8081).</p>
+            <pre class="code-block"><code>setsebool -P httpd_can_network_connect 1</code></pre>
+            <div class="command-explanation">
+              <p><strong>Explication de la commande <code>setsebool -P httpd_can_network_connect 1</code> :</strong></p>
+              <p><code>setsebool</code> : C'est la commande utilisée pour modifier les valeurs des booléens SELinux. Les booléens SELinux sont des interrupteurs qui activent ou désactivent certaines règles de la politique de sécurité.</p>
+              <p><code>-P</code> : Cette option rend le changement permanent. Sans cette option, la modification du booléen serait perdue au prochain redémarrage du système. Avec <code>-P</code>, la configuration est écrite sur le disque.</p>
+              <p><code>httpd_can_network_connect</code> : C'est le nom du booléen SELinux spécifique qui contrôle si le processus du serveur HTTP Apache (<code>httpd</code>) est autorisé à initier des connexions réseau vers d'autres services/ports. Pour un reverse proxy, Apache a besoin de cette permission pour se connecter au serveur backend (l'application Docker sur le port 8081).</p>
+              <p><code>1</code> : C'est la valeur pour activer (ou mettre à "vrai") le booléen. Mettre ce booléen à <code>1</code> autorise donc Apache à établir des connexions réseau sortantes.</p>
+            </div>
+            <p>Après toutes ces configurations, il est impératif de redémarrer le service Apache pour qu'il prenne en compte les nouveaux fichiers de configuration et les modifications des modules.</p>
+            <pre class="code-block"><code>systemctl restart httpd</code></pre>
+            <div class="command-explanation">
+              <p><strong>Explication de la commande :</strong></p>
+              <p><code>systemctl</code> : C'est l'outil de contrôle principal pour <code>systemd</code>, le gestionnaire de système et de services utilisé par de nombreuses distributions Linux modernes (y compris AlmaLinux). Il permet de gérer les services (démarrer, arrêter, redémarrer, vérifier l'état, etc.).</p>
+              <p><code>restart httpd</code> : Cette commande demande à <code>systemd</code> de redémarrer le service <code>httpd</code> (le service Apache). Un redémarrage arrête le service s'il est en cours d'exécution, puis le redémarre, rechargeant ainsi sa configuration.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </article>
+
+    <div class="ads-inarticle">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-9796611849898674"
+           data-ad-slot="2222222222" 
+           data-ad-format="fluid"
+           data-ad-layout="in-article"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Romain Begot – Portfolio Professionnel | BTS SIO SISR</p>
+  </footer>
+
+  <script src="js/loader.js"></script>
+  </body>
+</html>
