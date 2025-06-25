@@ -61,96 +61,87 @@
   </header>
 
 <main>
-<section id="veille-ia" class="container mx-auto px-4 py-10 text-slate-100 space-y-16">
-  <h1 class="text-center text-4xl font-bold mb-8 gradient-text">Veille technologique — IA (mise à jour : Juin 2025)</h1>
+<article class="veille-ia">
+  <h2>Veille IA – Juin 2025</h2>
+  <p class="intro">Ce dossier rassemble les développements marquants des six derniers mois chez Anthropic, Google / DeepMind et OpenAI, ainsi que leurs perspectives à horizon 2026.</p>
 
-  <!-- ================= ANTHROPIC ================= -->
-  <article id="anthropic" class="space-y-6">
-    <h2 class="text-3xl font-semibold border-b border-cyan-400 pb-2">Anthropic • Claude & Sonnet</h2>
-    <ul class="list-disc list-inside space-y-3">
-      <li><strong>Claude 3.7 Sonnet</strong> devient disponible sur tous les forfaits (Free, Pro, Team, Enterprise) et sur les API Bedrock & Vertex AI. </li>
-      <li>Le modèle intègre un <em>Extended Thinking Mode</em> permettant des chaînes de raisonnement affichées à l’utilisateur. </li>
-      <li><strong>Claude 4 (Opus 4 & Sonnet 4)</strong> est lancé en mai 2025 : +35 % de précision moyenne et contexte 256 k. </li>
-      <li>Opus 4 domine le benchmark <em>SWE‑bench Verified</em> pour les tâches logicielles réelles. </li>
-      <li>Recherche : cartographie de millions de « neurones » dans Claude — percée d’interprétabilité. </li>
-      <li>Fortune salue une « ouverture de la boîte noire » après la découverte de circuits sémantiques. </li>
-      <li>Série F : levée de <strong>3,5 G$</strong> (mars 2025) valorisant Anthropic 61,5 G$. </li>
-      <li>Dette convertible : <strong>2,5 G$</strong> supplémentaires auprès des grandes banques (17 mai 2025). </li>
-      <li>AWS injecte <strong>4 G$</strong> et collabore sur les puces Trainium 2 dans Bedrock. </li>
-      <li>Claude 3.7 est désormais hébergé dans la région EU (Londres) sur Bedrock. </li>
-      <li>Certification <strong>FedRAMP High & DoD IL4/5</strong> obtenue pour les charges sensibles US Gov. </li>
-      <li>Partenariat pluriannuel avec <strong>Databricks</strong> pour outiller 10 000+ clients en agents Claude. </li>
-      <li>Score de conformité 0,89 au nouvel <strong>EU AI Act Checker</strong>, devant Meta & OpenAI. </li>
-      <li>L’Assemblée européenne expérimente Claude comme archiviste numérique, avec résultats mitigés. </li>
-      <li>Anthropic rejoint le programme <strong>SAP × AWS AI Co‑Innovation</strong> pour ERP génératif. </li>
-      <li>Tutoriels Bedrock : `Converse` API multi‑langages pour invoquer Claude depuis .NET → Swift. </li>
-      <li>Blog AWS : « Claude Code » + prompt‑caching = latence réduite 40 %. </li>
-      <li>Chris Olah (co‑fondateur) publie un plan de détection automatique des circuits de biais. </li>
-      <li>Dario Amodei prédit l’ère du « milliardaire solo » grâce à l’IA d’ici 2026. </li>
-      <li>Feuille de route : Amodei vise un <strong>Claude 5</strong> « quasi‑humain » à horizon 2027. </li>
-    </ul>
-    <h3 class="text-2xl mt-8 font-semibold">Perspectives 2025‑2027</h3>
-    <p>Anthropic travaille sur <strong>Claude 5</strong> (contexte 1 M tokens et interprétabilité neuronale), l’intégration native dans Bedrock <em>Agents for SAP</em> et une empreinte carbone divisée par 3 via Trainium 2. </p>
-  </article>
+  <h3>Anthropic : 20 faits clés</h3>
+  <ul>
+    <li><strong>21 juin 2024</strong> – Lancement de Claude 3.5 Sonnet, modèle milieu de gamme plus rapide et moins coûteux que Claude 3 Sonnet citeturn0search0.</li>
+    <li><strong>24 févr. 2025</strong> – Dévoilement de Claude 3.7 Sonnet : premier modèle « hybrid reasoning » offrant réponse instantanée ou raisonnement pas-à-pas citeturn7search7.</li>
+    <li><strong>24 févr. 2025</strong> – Sortie simultanée de Claude Sonnet 4, bond de performance en codage et compréhension citeturn0search3.</li>
+    <li><strong>Juin 2025</strong> – Annonce de la famille Claude 4, optimisée pour workflows agents complexes citeturn0search9.</li>
+    <li>La variante Claude Opus 4 atteint une fenêtre de contexte de <em>200 k tokens</em>, record du marché citeturn7search0.</li>
+    <li>Objectif public : cartographier les circuits internes des modèles d’ici 2027 pour une IA interprétable citeturn1search1.</li>
+    <li>Publication d’outils « extended thinking » pour exposer le raisonnement de Claude dans l’API citeturn7search4.</li>
+    <li><strong>12 mars 2025</strong> – Claude 3.7 Sonnet intégré à Amazon Bedrock Knowledge Bases citeturn2search2.</li>
+    <li><strong>Mai 2025</strong> – Bedrock active le <em>prompt caching</em> pour Sonnet 4, divisant la latence par 2 citeturn2search1.</li>
+    <li><strong>23 juin 2025</strong> – Mise en production du profil d’inference Claude 3.5 Sonnet v2 pour routage optimisé citeturn2search4.</li>
+    <li>Levée de fonds de 3,5 G$ portant la valorisation à > 60 G$ ; 100 embauches prévues en Europe citeturn1news38.</li>
+    <li>Investissement stratégique dans la start-up Goodfire dédiée à l’interprétabilité citeturn1news38.</li>
+    <li>Arrivée de Mike Krieger (Instagram) comme CPO pour accélérer les produits grand-public citeturn7news10.</li>
+    <li>Claude Code fournit désormais complétions et refactorings contextuels dans VS Code citeturn7search7.</li>
+    <li>Claude 3 Haiku reste la variante la plus rapide (21 k tokens/s) pour prompts ≤ 32 k citeturn7search6.</li>
+    <li>Partenariat AWS : Claude disponible dans 10 régions via Bedrock, avec intégration Guardrails citeturn2search0.</li>
+    <li>Nouvelle API « extended thinking tips » propose des stratégies de prompt engineering avancées citeturn7search1.</li>
+    <li>Dario Amodei estime plausible l’émergence d’une IA super-intelligente dès 2026 citeturn1news38.</li>
+    <li>Claude Robotics équipe des agents de pricing chez Amazon Bedrock citeturn2search3.</li>
+    <li>Les profils d’inference régionaux garantissent la souveraineté des données clients (Paris eu-west-3) citeturn2search2.</li>
+  </ul>
 
-  <!-- ================= GOOGLE / DEEPMIND ================= -->
-  <article id="google" class="space-y-6">
-    <h2 class="text-3xl font-semibold border-b border-cyan-400 pb-2">Google / DeepMind • Gemini, Veo & Gemma</h2>
-    <ul class="list-disc list-inside space-y-3">
-      <li><strong>Gemini 2.5 Pro & Flash</strong> passent GA : audio natif, garde‑fous avancés, Project Mariner. </li>
-      <li>Mode expérimental <em>Deep Think</em> booste la résolution de maths & code complexes. </li>
-      <li><code>gemini-2.5-flash</code> GA le 17 juin 2025 (Vertex AI), cycle de vie publié. </li>
-      <li><strong>AI Mode</strong> de Google Search déploie un Gemini 2.5 custom dans les Overviews US. </li>
-      <li><strong>Gemini Live</strong> sur mobile gagne caméra + partage d’écran pour aide visuelle temps‑réel. </li>
-      <li>Prototype multimodal <strong>Project Astra</strong> : assistant universel vers lunettes & Gemini Live. </li>
-      <li><strong>Project Mariner</strong> (agent bureautique) accessible via Gemini API Ultra. </li>
-      <li><strong>Gemini Robotics On‑Device</strong> offre autonomie hors‑ligne aux robots – VLA compact. </li>
-      <li>Blog AI : Gemini 2.5 pour robotique & embodied intelligence (24 juin 2025). </li>
-      <li>TechCrunch : modèle Gemini on‑device pour robots sans cloud. </li>
-      <li><strong>AI Overviews</strong> déjà disponibles pour 200 M+ utilisateurs US, déploiement mondial prévu. </li>
-      <li><strong>Veo 3</strong> s’intègre à YouTube Shorts (200 Md vues/j) dès cet été. </li>
-      <li>Canva adopte aussi Veo 3 pour la génération vidéo créative. </li>
-      <li>Veo 3 améliore la qualité vidéo et l’audio génératif. </li>
-      <li>Famille <strong>Gemma</strong> : modèles open‑source légers issus de la recherche Gemini. </li>
-      <li><strong>Gemma 3</strong> gère texte, images & vidéo sur 1 GPU, surpassant Llama 3 (Verge). </li>
-      <li>Gemini API propose plusieurs variantes (Ultra, Pro, Flash, Flash‑Lite). </li>
-      <li>SDK développeurs pour Robotics On‑Device ouvert aux « trusted testers ». </li>
-      <li>Vision officielle : bâtir un assistant universel multimodal (blog DeepMind). </li>
-      <li>Programme GSoC 2025 : évalue Gemini 2.5 & Gemma via benchmarks open‑source. </li>
-    </ul>
-    <h3 class="text-2xl mt-8 font-semibold">Perspectives 2025‑2027</h3>
-    <p>Google prépare <strong>Gemini 3 Ultra</strong> (100 k tokens audio + vidéo 4K), <em>Veo 4</em> pour longs‑métrages et <strong>Gemma 4</strong> capable de fine‑tuning local sur TPU‑laptop. Un SDK <em>Agent Weaver</em> combinera Astra, Mariner et Gemini Live pour des agents multimodaux embarqués.</p>
-  </article>
+  <h3>Google / DeepMind : 20 faits clés</h3>
+  <ul>
+    <li><strong>17 juin 2025</strong> – GA de Gemini 2.5 Pro sur Vertex AI, avec meilleures performances de raisonnement citeturn3search0.</li>
+    <li>Même jour : sortie de Gemini 2.5 Flash, variante rapide et peu coûteuse citeturn3search7.</li>
+    <li>Le déploiement 2.5 Pro Preview sur l’appli Gemini web/mobile a démarré fin mai 2025 citeturn3search2.</li>
+    <li>Nouveaux paliers tarifaires : Gratuit, AI Pro (19,99 $/mois, 2 To), AI Ultra (249,99 $/mois) citeturn3search6.</li>
+    <li>Veo 3, modèle vidéo + audio natifs, génère des clips 8 s en 1080 p citeturn0search1.</li>
+    <li>Veo 3 intégré au flux Shorts de YouTube et à l’appli Gemini citeturn0search7.</li>
+    <li>DeepMind publie aujourd’hui une version Gemini Robotics <em>on-device</em> pour robots autonomes citeturn0news28turn3news24.</li>
+    <li>SDK Gemini Robotics ouvert aux testeurs afin de faciliter le fine-tuning citeturn3news24.</li>
+    <li>Blog développeurs : migration des chaînes modèle 2.5 Preview → 2.5 Pro avant le 19 juin 2025 citeturn3search4.</li>
+    <li>Gemma 2 (9B, 27B) dépasse Llama 3 8B sur Arena, optimisée pour CPU/GPU locaux citeturn1search0.</li>
+    <li>Gemma 2 quantisée fonctionne sur laptops sans GPU dédié citeturn1search0.</li>
+    <li>Android : Gemini gagnera le contrôle avancé des apps dès le 7 juillet 2025 citeturn3search3.</li>
+    <li>I/O 2025 : Veo 3 accessible aux abonnés AI Ultra US et via Vertex AI citeturn9search0.</li>
+    <li>Google Cloud Next 2025 : Agent Development Kit (ADK) open-source pour construire des agents multi-fournisseurs citeturn9search2.</li>
+    <li>Gemini Robotics modèle hybride cloud/on-device conserve option de routage sécurisé citeturn3news24.</li>
+    <li>Chromebooks Plus embarquent Gemini pour Live Translate et Help Me Read citeturn9search4.</li>
+    <li>Google finance 10 000 $ de crédits Cloud aux chercheurs utilisant Gemma 3 citeturn9news10.</li>
+    <li>Gemma 3 se veut le plus puissant modèle 1 GPU avec vision haute résolution citeturn9news10.</li>
+    <li>Gemini 2.5 Flash arrive bientôt dans Vertex AI pour latence ultra-basse citeturn9search2.</li>
+    <li>Flood Hub enrichi par Gemini pour la prévision des crues sur 80 pays citeturn9search5.</li>
+  </ul>
 
-  <!-- ================= OPENAI ================= -->
-  <article id="openai" class="space-y-6">
-    <h2 class="text-3xl font-semibold border-b border-cyan-400 pb-2">OpenAI • ChatGPT, Sora, Codex & Stargate</h2>
-    <ul class="list-disc list-inside space-y-3">
-      <li>Lancement du modèle <strong>o3‑pro</strong> (10 juin 2025) pour les abonnés Pro + API. </li>
-      <li>Mise à jour <em>Advanced Voice Mode</em> : intonation plus naturelle (7 juin 2025). </li>
-      <li>TechCrunch détaille cadence réaliste et pauses expressives. </li>
-      <li><strong>Sora</strong> génère vidéos réalistes & simulateur de monde — base pour agents physiques. </li>
-      <li><strong>Codex</strong> ouvre l’accès Internet et arrive pour les abonnés ChatGPT Plus (3 juin 2025). </li>
-      <li>Sam Altman confirme que <strong>GPT‑5</strong> sortira « probablement cet été ». </li>
-      <li>Roadmap GPT‑5 : raisonnement amélioré & unification systèmes (Fello AI). </li>
-      <li>Podcast OpenAI #1 : Altman détaille AGI et Project Stargate. </li>
-      <li>Project Stargate : plan <strong>500 G$</strong> pour des data centers IA géants USA. </li>
-      <li>Premier campus Abilene (TX) : 1,2 GW, 64 000 GB200 GPUs dès 2026. </li>
-      <li>TechRepublic résume 10 faits clés sur le data center Stargate phase 1. </li>
-      <li>Oracle investit 40 G$ en puces Nvidia pour Stargate — contrat 15 ans. </li>
-      <li>OpenAI compte désormais <strong>3 M</strong> entreprises clientes (+1 M depuis février). </li>
-      <li>Partenariat <strong>Apple Intelligence</strong> : modèles GPT embarqués sur iOS 26. </li>
-      <li>Accord Jony Ive suspendu suite à litige de marque « io ». </li>
-      <li>Rivalité croissante avec Microsoft Copilot selon Bloomberg. </li>
-      <li>EU AI Act Checker pointe des failles de conformité dans GPT‑4o. </li>
-      <li>Altman blog : énergie & intelligence bientôt « bon marché et quasi‑infinies ». </li>
-      <li>YouTube rapport : GPT‑5 présenté comme « transformationnel ». </li>
-      <li>Microsoft Build 2025 : Snowflake Summit — Altman évoque agents autonomes. </li>
-    </ul>
-    <h3 class="text-2xl mt-8 font-semibold">Perspectives 2025‑2027</h3>
-    <p>OpenAI prévoit <strong>GPT‑5 public</strong> (été 2025) puis <strong>GPT‑o4‑full</strong> multimodal fin 2026, l’intégration de Sora dans la suite Adobe, et l’expansion mondiale de Stargate (Hub EMEA prévu à Abu Dhabi). OpenAI mise sur un coût GPU divisé par 2 grâce aux puces Blackwell GB200.</p>
-  </article>
-</section>
+  <h3>OpenAI : 20 faits clés</h3>
+  <ul>
+    <li><strong>30 avr. 2025</strong> – GPT‐4 remplacé par GPT‐4o par défaut dans ChatGPT grand public citeturn4news28.</li>
+    <li>GPT‐4o mini a succédé à GPT‐3.5 Turbo dès juillet 2024 citeturn8search4.</li>
+    <li>GPT‐4o est déployable sur Azure AI Foundry (modèles 2024-11-20) citeturn4search0.</li>
+    <li><strong>7 juin 2025</strong> – Amélioration majeure du Voice Mode (intonation, fluidité) pour abonnés Plus citeturn8search0.</li>
+    <li>Voice Mode offre traduction multilingue temps réel et latence réduite citeturn8search2.</li>
+    <li>Roll-out progressif de Voice Mode confirmé par la communauté développeurs citeturn8search3.</li>
+    <li>GPT‐4.1 API remplace GPT‐4.5 Preview (retrait 14 juil. 2025) citeturn4search3.</li>
+    <li><strong>3 juin 2025</strong> – Codex accessible à tous les abonnés Plus avec internet opt-in citeturn4search2.</li>
+    <li>SD Times détaille l’ajout d’accès Internet et l’automatisation de builds le 6 juin 2025 citeturn4search8.</li>
+    <li>Forum dev : Codex exécute installations, tests et upgrades dans le sandbox citeturn4search5.</li>
+    <li>Sora permet la génération vidéo 20 sec 1080 p via interface web citeturn4search1.</li>
+    <li>Aucun API public Sora n’est prévu à ce stade (AMA avril 2025) citeturn4search4.</li>
+    <li>Sora supporte aspect ratios 9:16, 1:1, 16:9 citeturn4search1.</li>
+    <li>OpenAI publie un rapport sur la lutte contre les usages malveillants de l’IA (juin 2025) citeturn1search6.</li>
+    <li>Sam Altman annonce GPT‐5 pour l’été 2025, promettant bond de capacités citeturn0search5.</li>
+    <li>ExplodingTopics recense indices de release GPT‐5 dans posts d’Altman citeturn0search8.</li>
+    <li>Voice Mode repose sur GPT‐4o pour transcription et synthèse citeturn8search1.</li>
+    <li>GPT‐4o a remplacé DALL‐E 3 pour l’image en mars 2025 citeturn8search4.</li>
+    <li>Déploiement alpha de Voice Mode démarré en juillet 2024 auprès de quelques Plus users citeturn8search6.</li>
+    <li>Azure auto-met à jour gpt-35-turbo vers version 0125 dès janv. 2025 citeturn4search6.</li>
+  </ul>
+
+  <h3>Perspectives 2025–26</h3>
+  <p><strong>Anthropic</strong> vise Claude 5 doté d’une gouvernance d’outils externe et d’un monitoring explicable en production (objectif 2026) ; explore un modèle agent collaboratif capable d’« heures de travail » autonomes citeturn1search5.</p>
+  <p><strong>Google / DeepMind</strong> travaille sur Gemini 3 (> 30 T params) pour IA multimodale unifiée et concentre la R&D sur l’agent framework ADK afin de créer un écosystème d’agents interopérables citeturn9news10turn9search2.</p>
+  <p><strong>OpenAI</strong> prépare GPT‐5, censé unifier architecture « omni » et capacités agents ; Sora API reste en réflexion en fonction des risques génération vidéo citeturn0search5turn4search4.</p>
+</article>
 </main>
 
  <footer>
